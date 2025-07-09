@@ -313,7 +313,7 @@ For better security, you can configure the MCP server to use system environment 
         "type": "stdio",
         "command": "python",
         "args": [
-          "E:\\CodeTestFile\\Github-opensource-repo\\ZoteroDB-Analyzer\\mcp_server_runner.py"
+          "E:\\<path-to-this-pkg>\\mcp_server_runner.py"
         ]
       }
     }
