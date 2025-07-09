@@ -13,7 +13,7 @@ __email__ = "contact@zoterodb-analyzer.com"
 
 from .core import ZoteroAnalyzer
 from .exporter import ContentExporter
-from .models import ZoteroItem, FilterCriteria, ExportFormat
+from .models import ZoteroItem, FilterCriteria, ExportFormat, LiteratureCategory, ItemType
 
 __all__ = [
     "ZoteroAnalyzer",
@@ -21,4 +21,6 @@ __all__ = [
     "ZoteroItem",
     "FilterCriteria",
     "ExportFormat",
+    "LiteratureCategory",
+    "ItemType",
 ]

@@ -60,8 +60,15 @@ pip install zoterodb-analyzer[mcp]
 
 Set up Zotero credentials:
 ```bash
+# Linux Bash
 export ZOTERO_API_KEY="your_api_key"
 export ZOTERO_LIBRARY_ID="your_user_id"
+# Windows Cmd
+set ZOTERO_API_KEY="your_api_key"
+set ZOTERO_LIBRARY_ID="your_user_id"
+# Windows PowerShell
+$env:ZOTERO_LIBRARY_ID='your_user_id'
+$env:ZOTERO_API_KEY='your_api_key'
 ```
 
 Run the examples:
@@ -81,12 +88,42 @@ zoterodb-analyzer --help
 ### 1. Set up Zotero API Access
 
 First, get your Zotero API credentials:
-
 1. Go to [Zotero Settings](https://www.zotero.org/settings/keys)
 2. Create a new private key with library access
 3. Note your User ID and API Key
 
-### 2. Basic Usage
+### 2. Configure Environment Variables
+
+#### Windows Command Prompt:
+```cmd
+set ZOTERO_LIBRARY_ID=your_user_id
+set ZOTERO_API_KEY=your_api_key
+```
+
+#### Windows PowerShell:
+```powershell
+$env:ZOTERO_LIBRARY_ID='your_user_id'
+$env:ZOTERO_API_KEY='your_api_key'
+```
+
+#### Windows Permanent Environment Variables:
+1. Press `Win+R`, type `sysdm.cpl`, press Enter
+2. Go to Advanced > Environment Variables
+3. Add `ZOTERO_LIBRARY_ID` and `ZOTERO_API_KEY` as new variables
+
+#### Linux/macOS:
+```bash
+export ZOTERO_LIBRARY_ID='your_user_id'
+export ZOTERO_API_KEY='your_api_key'
+```
+
+To make it permanent, add to `~/.bashrc` or `~/.zshrc`:
+```bash
+echo 'export ZOTERO_LIBRARY_ID="your_user_id"' >> ~/.bashrc
+echo 'export ZOTERO_API_KEY="your_api_key"' >> ~/.bashrc
+```
+
+### 3. Basic Usage
 
 ```python
 from zoterodb_analyzer import ZoteroAnalyzer, ContentExporter, FilterCriteria, LiteratureCategory
@@ -101,7 +138,7 @@ analyzer = ZoteroAnalyzer(
 # Fetch items with filtering
 filter_criteria = FilterCriteria(
     tags=["machine learning", "robotics"],
-    year_range=(2020, 2024),
+    date_range=(2020, 2024),
     item_types=[ItemType.JOURNAL_ARTICLE]
 )
 
@@ -114,7 +151,7 @@ exported_files = exporter.export_items(items, format=ExportFormat.MARKDOWN)
 print(f"Exported to: {exported_files['markdown']}")
 ```
 
-### 3. Advanced Categorization
+### 4. Advanced Categorization
 
 ```python
 # Define literature categories

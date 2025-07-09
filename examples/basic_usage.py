@@ -11,6 +11,7 @@ This example demonstrates the complete workflow:
 
 import os
 import json
+import platform
 from pathlib import Path
 
 from zoterodb_analyzer import (
@@ -23,6 +24,43 @@ from zoterodb_analyzer import (
 )
 
 
+def print_credential_instructions():
+    """Print OS-specific instructions for setting environment variables."""
+    system = platform.system().lower()
+    
+    print("⚠️  Please set your Zotero credentials:")
+    print("\nGet your credentials from: https://www.zotero.org/settings/keys")
+    print("1. Go to Zotero Settings > API Keys")
+    print("2. Create a new private key with library access")
+    print("3. Note your User ID and API Key")
+    
+    if system == "windows":
+        print("\n📋 For Windows Command Prompt:")
+        print("   set ZOTERO_LIBRARY_ID=your_user_id")
+        print("   set ZOTERO_API_KEY=your_api_key")
+        
+        print("\n📋 For Windows PowerShell:")
+        print("   $env:ZOTERO_LIBRARY_ID='your_user_id'")
+        print("   $env:ZOTERO_API_KEY='your_api_key'")
+        
+        print("\n📋 For permanent Windows environment variables:")
+        print("   1. Press Win+R, type 'sysdm.cpl', press Enter")
+        print("   2. Go to Advanced > Environment Variables")
+        print("   3. Add ZOTERO_LIBRARY_ID and ZOTERO_API_KEY")
+    
+    else:  # Linux/macOS
+        print("\n📋 For Linux/macOS:")
+        print("   export ZOTERO_LIBRARY_ID='your_user_id'")
+        print("   export ZOTERO_API_KEY='your_api_key'")
+        
+        print("\n📋 To make it permanent, add to ~/.bashrc or ~/.zshrc:")
+        print("   echo 'export ZOTERO_LIBRARY_ID=\"your_user_id\"' >> ~/.bashrc")
+        print("   echo 'export ZOTERO_API_KEY=\"your_api_key\"' >> ~/.bashrc")
+    
+    print("\n💡 Alternative: You can also pass credentials directly in code:")
+    print("   analyzer = ZoteroAnalyzer('your_user_id', 'user', 'your_api_key')")
+
+
 def main():
     """Main example workflow."""
     
@@ -31,10 +69,7 @@ def main():
     API_KEY = os.getenv('ZOTERO_API_KEY', 'your_api_key_here')
     
     if LIBRARY_ID == 'your_user_id_here' or API_KEY == 'your_api_key_here':
-        print("⚠️  Please set your Zotero credentials:")
-        print("   export ZOTERO_LIBRARY_ID='your_user_id'")
-        print("   export ZOTERO_API_KEY='your_api_key'")
-        print("\nGet credentials from: https://www.zotero.org/settings/keys")
+        print_credential_instructions()
         return
     
     print("🔄 Initializing ZoteroDB Analyzer...")
@@ -52,7 +87,7 @@ def main():
         # Example 1: Basic fetching with filters
         print("\n📚 Example 1: Fetching recent papers...")
         filter_criteria = FilterCriteria(
-            year_range=(2020, 2024),
+            date_range=(2020, 2024),  # Fixed: changed from year_range to date_range
             item_types=[ItemType.JOURNAL_ARTICLE],
             keywords=["machine learning", "robotics", "AI"]
         )
@@ -143,6 +178,7 @@ def main():
         print("   1. Check your Zotero API credentials")
         print("   2. Ensure your library has some items")
         print("   3. Check your internet connection")
+        print("   4. Verify your User ID is correct (should be numeric)")
 
 
 if __name__ == "__main__":
