@@ -3,6 +3,8 @@
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+> **Languages**: [English](README.md) | [中文](README_zh.md)
+
 Zotero Database Analyzer for Literature Review Fast Composing - A comprehensive Python package for analyzing Zotero databases and generating structured literature reviews for LLM agents.
 
 ## Features
