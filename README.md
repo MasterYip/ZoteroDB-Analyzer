@@ -45,7 +45,7 @@ pip install zoterodb-analyzer
 ### For Development
 
 ```bash
-git clone https://github.com/yourusername/ZoteroDB-Analyzer.git
+git clone https://github.com/MasterYip/ZoteroDB-Analyzer.git
 cd ZoteroDB-Analyzer
 pip install -e .
 ```
@@ -325,17 +325,17 @@ If you use ZoteroDB-Analyzer in your research, please cite:
 ```bibtex
 @software{zoterodb_analyzer,
   title={ZoteroDB-Analyzer: A Python Package for Literature Review Automation},
-  author={ZoteroDB Analyzer Team},
+  author={Raymon Yip},
   year={2024},
-  url={https://github.com/yourusername/ZoteroDB-Analyzer}
+  url={https://github.com/MasterYip/ZoteroDB-Analyzer}
 }
 ```
 
 ## Support
 
 - 📖 **Documentation**: [Link to docs]
-- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/yourusername/ZoteroDB-Analyzer/issues)
-- 💬 **Discussions**: [GitHub Discussions](https://github.com/yourusername/ZoteroDB-Analyzer/discussions)
+- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/MasterYip/ZoteroDB-Analyzer/issues)
+- 💬 **Discussions**: [GitHub Discussions](https://github.com/MasterYip/ZoteroDB-Analyzer/discussions)
 - 📧 **Contact**: <contact@zoterodb-analyzer.com>
 
 ## Roadmap
