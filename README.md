@@ -3,293 +3,292 @@
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-> **Languages**: [English](README.md) | [中文](README_zh.md)
+> **🌐 Languages**: [English](README.md) | [中文](README_zh.md)
 
-Zotero Database Analyzer for Literature Review Fast Composing - A comprehensive Python package for analyzing Zotero databases and generating structured literature reviews for LLM agents.
+**ZoteroDB-Analyzer** is a powerful Python toolkit designed for academic researchers to automate Zotero literature library analysis and generate high-quality literature reviews. The tool supports LLM agent integration, enabling AI assistants to intelligently help you manage and analyze academic literature.
 
-## Features
+## 📋 Table of Contents
 
-### 🔍 **Comprehensive Zotero Integration**
+- [✨ Key Highlights](#-key-highlights)
+- [🎯 Features](#-features)
+- [📦 Quick Installation](#-quick-installation)
+- [🚀 5-Minute Quick Start](#-5-minute-quick-start)
+- [💻 Usage Guide](#-usage-guide)
+- [🤖 VS Code Copilot Integration](#-vs-code-copilot-integration)
+- [🎯 Use Cases](#-use-cases)
+- [📚 API Reference](#-api-reference)
+- [🤝 Community & Support](#-community--support)
+- [📜 License](#-license)
+- [🚀 Roadmap](#-roadmap)
 
-- Fetch literature items from personal or group Zotero libraries
-- Advanced filtering by tags, collections, authors, keywords, date ranges, and item types
-- Full metadata extraction including abstracts, DOIs, BibTeX citations
-- Search functionality across your entire library
+## ✨ Key Highlights
 
-### 📊 **Intelligent Literature Categorization**
+- 🚀 **One-Click Configuration**: Simple `.env` file setup, no complex configuration required
+- 🤖 **AI Integration**: Native support for VS Code Copilot, Claude, and other LLM agents
+- 📊 **Smart Analysis**: Automatic literature categorization and structured review generation
+- 🔍 **Powerful Search**: Multi-dimensional filtering and searching of your Zotero library
+- 📝 **Multiple Export Formats**: Support for JSON, Markdown, and other LLM-friendly formats
 
-- Automatic categorization based on user-defined keywords
-- Support for multiple classification schemes
-- Smart content analysis for grouping related papers
+## 🎯 Features
 
-### 📝 **LLM-Optimized Export Formats**
+### 🔍 **Smart Literature Management**
 
-- **JSON format** for structured data processing
-- **Markdown format** optimized for LLM consumption
-- **Specialized context files** for literature review composition
-- Support for both individual items and categorized collections
+- 📚 **Comprehensive Integration**: Seamlessly connect to personal or team Zotero libraries
+- 🎯 **Precise Filtering**: Support for multi-dimensional filtering by tags, collections, authors, keywords, and time ranges
+- 📊 **Complete Metadata**: Automatic extraction of abstracts, DOIs, BibTeX citations, and other information
+- 🔍 **Full Library Search**: Quickly locate target literature
 
-### 🤖 **Agent Integration**
+### 🧠 **AI-Driven Categorization**
 
-- **Model Context Protocol (MCP) interface** for seamless agent integration
-- Tools for fetching, categorizing, and exporting literature data
-- Designed for use with Claude, GPT-4, and other LLM agents
-- Perfect for automated literature review generation
+- 🏷️ **Automatic Classification**: Intelligent literature grouping based on keywords and content
+- 📋 **Flexible Schemes**: Support for custom classification systems and multiple criteria
+- 🎨 **Content Analysis**: Use AI technology to identify related papers and establish connections
 
-## Installation
+### 📝 **LLM-Friendly Output**
 
-### From PyPI (when published)
+- 📄 **JSON Format**: Structured data for easy programmatic processing
+- 📝 **Markdown Format**: Text format optimized specifically for LLMs
+- 🎯 **Specialized Templates**: Context file generation for literature reviews
+- 🔄 **Batch Export**: Support for single and categorized batch processing
+
+### 🤖 **Seamless AI Integration**
+
+- 🔌 **MCP Protocol**: Standardized Model Context Protocol interface
+- 🛠️ **Rich Toolset**: Complete functionality for fetching, categorizing, and exporting
+- 🎭 **Multi-Platform Support**: Compatible with Claude, GPT-4, VS Code Copilot, and more
+- ⚡ **Automated Workflows**: One-click generation of high-quality literature reviews
+
+## 📦 Quick Installation
+
+### Method 1: Development Version (Recommended)
+
+```bash
+# Clone the repository
+git clone https://github.com/MasterYip/ZoteroDB-Analyzer.git
+cd ZoteroDB-Analyzer
+
+# Install dependencies
+pip install -e .
+```
+
+### Method 2: PyPI Installation (Coming Soon)
 
 ```bash
 pip install zoterodb-analyzer
 ```
 
-### For Development
+## 🚀 5-Minute Quick Start
+
+### Step 1️⃣: Get Zotero API Credentials
+
+1. **Get API Key**:
+   - Visit [Zotero Settings Page](https://www.zotero.org/settings/keys)
+   - Click "Create new private key"
+   - Make sure to check "Allow library access" permission
+   - Copy the generated API Key
+
+2. **Find User ID**:
+   - Visit your Zotero profile page: `https://www.zotero.org/username`
+   - The numbers in the URL are your User ID
+
+### Step 2️⃣: Configure Environment Variables
 
 ```bash
-git clone https://github.com/MasterYip/ZoteroDB-Analyzer.git
-cd ZoteroDB-Analyzer
-pip install -e .
+# Copy configuration template
+cp .env.example .env
+
+# Edit .env file with your information
+ZOTERO_LIBRARY_ID=your_user_id
+ZOTERO_API_KEY=your_api_key
+ZOTERO_LIBRARY_TYPE=user
 ```
 
-### With MCP Support
+<div align="center" style="margin: 20px 0;">
+  <img src="doc/image.png" alt="Configuration Example" width="600" style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" />
+  <p><em>💡 Configuration Example: Fill in your Zotero credentials</em></p>
+</div>
+
+### Step 3️⃣: Verify Installation
 
 ```bash
-pip install zoterodb-analyzer[mcp]
-```
-
-## Quick Start
-
-Set up Zotero credentials:
-
-```bash
-# Linux Bash
-export ZOTERO_API_KEY="your_api_key"
-export ZOTERO_LIBRARY_ID="your_user_id"
-# Windows Cmd
-set ZOTERO_API_KEY="your_api_key"
-set ZOTERO_LIBRARY_ID="your_user_id"
-# Windows PowerShell
-$env:ZOTERO_LIBRARY_ID='your_user_id'
-$env:ZOTERO_API_KEY='your_api_key'
-```
-
-Run the examples:
-
-```bash
-python examples/basic_usage.py
-```
-
-Try the CLI:
-
-```bash
+# Test CLI tools
 zoterodb-analyzer --help
+
+# List your literature collections
+zoterodb-analyzer collections
+
+# Search literature example
+zoterodb-analyzer search --query "machine learning" --limit 10
 ```
 
-## Usage
 
-### 1. Set up Zotero API Access
+## 💻 Usage Guide
 
-First, get your [Zotero API](https://www.zotero.org/support/dev/web_api/v3/start) credentials:
+### 🐍 Python API Usage
 
-1. `your_api_key`. Go to [Zotero Settings](https://www.zotero.org/settings/keys) to create a new private key with library access.
-2. `your_user_id`. Go to your user profile and the URL is `https://www.zotero.org/<your_user_name>/<your_user_id>`.
-
-### 2. Configure Environment Variables
-
-#### Windows Command Prompt
-
-```cmd
-set ZOTERO_LIBRARY_ID=your_user_id
-set ZOTERO_API_KEY=your_api_key
-```
-
-#### Windows PowerShell
-
-```powershell
-$env:ZOTERO_LIBRARY_ID='your_user_id'
-$env:ZOTERO_API_KEY='your_api_key'
-```
-
-#### Windows Permanent Environment Variables
-
-1. Press `Win+R`, type `sysdm.cpl`, press Enter
-2. Go to Advanced > Environment Variables
-3. Add `ZOTERO_LIBRARY_ID` and `ZOTERO_API_KEY` as new variables
-
-#### Linux/macOS
-
-```bash
-export ZOTERO_LIBRARY_ID='your_user_id'
-export ZOTERO_API_KEY='your_api_key'
-```
-
-To make it permanent, add to `~/.bashrc` or `~/.zshrc`:
-
-```bash
-echo 'export ZOTERO_LIBRARY_ID="your_user_id"' >> ~/.bashrc
-echo 'export ZOTERO_API_KEY="your_api_key"' >> ~/.bashrc
-```
-
-### 3. Basic Usage
+#### Basic Literature Fetching and Export
 
 ```python
 from zoterodb_analyzer import ZoteroAnalyzer, ContentExporter, FilterCriteria, LiteratureCategory
 
-# Initialize analyzer
-analyzer = ZoteroAnalyzer(
-    library_id="your_user_id",
-    library_type="user",  # or "group"
-    api_key="your_api_key"
-)
+# 🔧 Initialize analyzer (automatically reads .env configuration)
+analyzer = ZoteroAnalyzer()
 
-# Fetch items with filtering
+# 🎯 Set filter criteria
 filter_criteria = FilterCriteria(
-    tags=["machine learning", "robotics"],
+    tags=["machine learning", "deep learning"],
     date_range=(2020, 2024),
-    item_types=[ItemType.JOURNAL_ARTICLE]
+    keywords=["neural network", "AI"],
+    item_types=["journalArticle", "conferencePaper"]
 )
 
+# 📚 Fetch literature
 items = analyzer.fetch_items(filter_criteria, limit=50)
-print(f"Found {len(items)} items")
+print(f"✅ Found {len(items)} relevant papers")
 
-# Export for LLM consumption
+# 📤 Export to Markdown format
 exporter = ContentExporter("output")
-exported_files = exporter.export_items(items, format=ExportFormat.MARKDOWN)
-print(f"Exported to: {exported_files['markdown']}")
+exported_files = exporter.export_items(items, format="markdown")
+print(f"📄 Files exported to: {exported_files['markdown']}")
 ```
 
-### 4. Advanced Categorization
+#### Smart Literature Categorization
 
 ```python
-# Define literature categories
+# 🏷️ Define research categories
 categories = [
     LiteratureCategory(
         name="Diffusion Models",
-        description="Papers on diffusion models in robotics",
-        keywords=["diffusion", "denoising", "generative model"]
+        description="Diffusion models and generative AI research",
+        keywords=["diffusion", "DDPM", "stable diffusion", "generative model"]
     ),
     LiteratureCategory(
-        name="Reinforcement Learning",
-        description="RL approaches for robot control",
-        keywords=["reinforcement learning", "policy gradient", "Q-learning"]
+        name="Reinforcement Learning", 
+        description="Reinforcement learning algorithms and applications",
+        keywords=["reinforcement learning", "Q-learning", "policy gradient", "RL"]
+    ),
+    LiteratureCategory(
+        name="Computer Vision",
+        description="Image processing and computer vision techniques", 
+        keywords=["computer vision", "image processing", "CNN", "object detection"]
     )
 ]
 
-# Categorize items
+# 🎯 Execute smart categorization
 categorized_items = analyzer.categorize_items(items, categories)
 
-# Export categorized literature for LLM context
-exported_files = exporter.export_categorized_items(
-    categorized_items, 
-    format=ExportFormat.BOTH
-)
+# 📊 View categorization results
+for category_name, category_items in categorized_items.items():
+    print(f"📁 {category_name}: {len(category_items)} papers")
 
-# Create LLM-optimized context file
+# 📝 Generate literature review context
 llm_context = exporter.export_for_llm_context(
     categorized_items, 
     context_type="related_works"
 )
+print(f"📋 Literature review file: {llm_context}")
 ```
 
-## Command Line Interface
+### ⌨️ Command Line Tools
 
-The package includes a powerful CLI for easy automation:
+#### Common Command Examples
 
 ```bash
-# Fetch and export literature
-zoterodb-analyzer fetch \
-    --library-id YOUR_USER_ID \
-    --api-key YOUR_API_KEY \
-    --tags "machine learning,robotics" \
-    --year-range 2020-2024 \
-    --format both \
-    --categories-file categories.json
-
-# List available collections
-zoterodb-analyzer collections --library-id YOUR_USER_ID --api-key YOUR_API_KEY
-
-# Search your library
+# 🔍 Search for papers on specific topics
 zoterodb-analyzer search \
-    --library-id YOUR_USER_ID \
-    --api-key YOUR_API_KEY \
-    --query "deep learning" \
-    --limit 20
+    --query "diffusion models" \
+    --limit 20 \
+    --export-format markdown
+
+# 📚 Fetch papers by tags and time range
+zoterodb-analyzer fetch \
+    --tags "machine learning,AI" \
+    --year-range 2022-2024 \
+    --limit 100 \
+    --export-format both
+
+# 🗂️ View library information
+zoterodb-analyzer collections     # List all collections
+zoterodb-analyzer tags            # List all tags
+
+# 🎯 Use custom categorization configuration
+zoterodb-analyzer fetch \
+    --categories-file my_categories.json \
+    --output-dir ./my_research
 ```
 
-### Categories File Format
+#### Creating Category Configuration Files
 
-Create a `categories.json` file to define your literature categories:
+Create a `categories.json` file to define your research categorizations:
 
 ```json
 [
   {
-    "name": "Diffusion Models",
-    "description": "Papers on diffusion models and generative approaches",
-    "keywords": ["diffusion", "denoising", "DDPM", "score-based"]
+    "name": "🤖 Diffusion Models",
+    "description": "Diffusion probabilistic models and related generative techniques",
+    "keywords": [
+      "diffusion", "DDPM", "DDIM", "stable diffusion", 
+      "score-based", "denoising", "generative model"
+    ]
   },
   {
-    "name": "Robot Learning",
-    "description": "Learning approaches for robotics",
-    "keywords": ["robot learning", "imitation learning", "demonstration"]
+    "name": "🧠 Large Language Models", 
+    "description": "Large-scale language models and Transformer architectures",
+    "keywords": [
+      "transformer", "GPT", "BERT", "LLM", 
+      "language model", "attention mechanism"
+    ]
+  },
+  {
+    "name": "🤖 Robot Learning",
+    "description": "Robot learning and control algorithms",
+    "keywords": [
+      "robot learning", "robotic manipulation", 
+      "imitation learning", "robot control"
+    ]
   }
 ]
 ```
 
-## MCP Integration for LLM Agents
+## 🤖 VS Code Copilot Integration
 
-The package provides a Model Context Protocol server for seamless integration with LLM agents:
+### 🚀 One-Click AI Assistant Configuration
 
-```python
-from zoterodb_analyzer.mcp_server import ZoteroMCPServer
+Through the MCP (Model Context Protocol), let your AI assistant directly access and analyze your Zotero literature library!
 
-# Initialize MCP server
-mcp_server = ZoteroMCPServer(
-    default_library_id="your_user_id",
-    default_api_key="your_api_key"
-)
+<div align="center" style="margin: 20px 0;">
+  <img src="doc/mcp_demo.png" alt="MCP Integration Demo" width="800" style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" />
+  <p><em>🎯 AI assistants can directly help you search and analyze literature</em></p>
+</div>
 
-# Available tools for agents:
-# - fetch_literature: Get literature with filtering
-# - categorize_literature: Categorize and export literature
-# - search_literature: Search library contents
-# - get_collections: List available collections
-# - get_tags: Get library tags
-# - export_for_llm: Create LLM-optimized exports
-```
+### 📋 Configuration Steps
 
-### 🔧 **VS Code Copilot MCP Configuration**
-
-![MCP Demo](doc/mcp_demo.png)
-
-To integrate ZoteroDB Analyzer with VS Code Copilot, follow these steps:
-
-#### 1. **Prepare the MCP Server**
-
-First, ensure the package is installed:
+#### 1️⃣ Verify Installation
 
 ```bash
-# Install the package
+# Ensure the project is properly installed
 pip install -e .
+
+# Test MCP server
+python examples/test_mcp_client.py
 ```
 
-#### 2. **Configure VS Code Github Copilot**
+#### 2️⃣ Configure VS Code Settings
 
-Add the following configuration to your VS Code Copilot settings. Open your VS Code settings and add this MCP server configuration:
+Add the following configuration to your VS Code `settings.json`:
 
 ```json
 {
   "mcp": {
     "servers": {
-      "MCP_ZoteroDB": {
+      "ZoteroDB_Analyzer": {
         "type": "stdio",
-        "command": "python",
+        "command": "/path/to/your/python",
         "args": [
-          "E:\\<path-to-this-pkg>\\mcp_server_runner.py"
+          "/path/to/ZoteroDB-Analyzer/mcp_server_runner.py"
         ],
         "env": {
-          "ZOTERO_LIBRARY_ID": "your_user_id",
-          "ZOTERO_API_KEY": "your_api_key"
+          "PYTHONPATH": "/path/to/ZoteroDB-Analyzer",
         }
       }
     }
@@ -297,154 +296,215 @@ Add the following configuration to your VS Code Copilot settings. Open your VS C
 }
 ```
 
-**⚠️ Important Notes:**
+> 💡 **Tip**: Replace the above paths with your actual installation paths. If using conda environment, the Python path might look like: `/home/username/anaconda3/envs/yourenv/bin/python`
 
-- Replace `your_user_id` and `your_api_key` with your actual Zotero credentials
-- Use double backslashes `\\` for Windows paths in JSON configuration
-- Keep your API key secure and consider using environment variables instead of hardcoding
+#### 3️⃣ Restart VS Code and Test
 
-#### 3. **Alternative: Using Environment Variables**
+After restarting VS Code, you can use the following features in Copilot conversations:
 
-For better security, you can configure the MCP server to use system environment variables:
+### 🛠️ Available AI Tools
 
-```json
-{
-  "mcp": {
-    "servers": {
-      "MCP_ZoteroDB": {
-        "type": "stdio",
-        "command": "python",
-        "args": [
-          "E:\\<path-to-this-pkg>\\mcp_server_runner.py"
-        ]
-      }
-    }
-  }
-}
+| 🔧 Tool Name | 📝 Function Description | 💬 Usage Example |
+|-------------|-------------------------|------------------|
+| `search_literature` | Search literature library | "Search for papers about diffusion models in my Zotero library" |
+| `fetch_literature` | Fetch and filter literature | "Get all machine learning papers from after 2023" |
+| `categorize_literature` | Smart literature categorization | "Categorize my AI papers by different subfields" |
+| `get_collections` | View literature collections | "List all collections in my Zotero library" |
+| `get_tags` | Get tag information | "Show all literature tags I've used" |
+| `export_for_llm` | Generate literature reviews | "Generate related work section for my deep learning survey" |
+
+### 💬 AI Assistant Conversation Examples
+
+After configuration, you can chat with Copilot like this:
+
+```
+🙋‍♂️ User: "Search for papers about diffusion models in my Zotero library"
+
+🤖 Copilot: Let me help you search for diffusion model related papers...
+[Automatically calls search_literature tool]
+Found 15 relevant papers, including:
+- "Denoising Diffusion Probabilistic Models" (Ho et al., 2020)
+- "Score-Based Generative Modeling..." (Song et al., 2021)
+...
+
+🙋‍♂️ User: "Please categorize these papers by application domain and generate a literature review"
+
+🤖 Copilot: [Automatically calls categorize_literature tool]
+Papers have been categorized into the following groups:
+📁 Image Generation: 8 papers
+📁 Text Generation: 4 papers  
+📁 Audio Synthesis: 3 papers
+[Generates structured literature review document]
 ```
 
-Then set your credentials as system environment variables (as described in the Environment Variables section above).
+### 🔒 Security Tips
 
-#### 4. **Test the Integration**
+- ✅ Use `.env` files to store sensitive information, avoid exposing API keys in configuration
+- ✅ Regularly update your Zotero API keys
+- ✅ Check configuration file permissions to ensure only you can access them
+## 🎯 Use Cases
 
-Once configured, restart VS Code Copilot. You can then use the following MCP tools in your conversations:
+### 📚 Academic Researchers
 
-- **`fetch_literature`** - Search and retrieve papers from your Zotero library
-- **`categorize_literature`** - Automatically categorize papers for literature reviews
-- **`search_literature`** - Search your library with text queries
-- **`get_collections`** - List your Zotero collections
-- **`get_tags`** - Get all tags from your library
-- **`export_for_llm`** - Export literature in LLM-optimized formats
+#### 📖 Literature Review Writing
+- **Quick Organization**: One-click retrieval of all relevant papers in a specific field
+- **Smart Categorization**: Automatically organize literature by research direction
+- **Format Export**: Directly generate Markdown content ready for papers
 
-#### 5. **Example Usage with Copilot**
+#### 🔍 Research Trend Analysis  
+- **Time Dimension**: Analyze changes in research hotspots across different years
+- **Author Networks**: Identify core researchers in the field
+- **Journal Distribution**: Understand publication channels for high-quality papers
 
-After configuration, you can ask Copilot things like:
+### 🤖 AI Developers
 
-- *"Search my Zotero library for papers about diffusion models"*
-- *"Categorize my recent machine learning papers for a literature review"*
-- *"Find papers by [author name] in my library"*
-- *"Export papers about robotics in markdown format for my thesis"*
+#### 💻 Model Training Data
+- **Dataset Construction**: Quickly collect training corpora and reference literature
+- **Benchmarking**: Obtain evaluation standards and methods for relevant fields
+- **Technology Research**: Comprehensively understand existing solutions
 
-The MCP server will automatically handle the requests and provide structured literature data that Copilot can use to help with your research and writing tasks.
+#### 🔧 LLM Application Development
+- **Knowledge Base Construction**: Provide high-quality academic content for RAG systems
+- **Context Enhancement**: Provide professional domain knowledge for AI assistants
+- **Automated Workflows**: Integrate into research and development processes
 
-### 🧪 **Testing the MCP Server**
+### 🏫 Educators
 
-You can test the MCP server functionality before integrating with Copilot:
+#### 📝 Course Design
+- **Material Selection**: Filter core literature based on course topics
+- **Case Studies**: Collect real research cases and methods
+- **Frontier Tracking**: Stay updated with disciplinary developments
+
+#### 👨‍🎓 Student Guidance
+- **Thesis Supervision**: Help students quickly locate relevant research
+- **Research Directions**: Discover emerging research fields and opportunities
+- **Academic Writing**: Provide standardized literature citations and formats
+
+## 📚 API Reference
+
+### 🔧 Core Components
+
+| Component | Function | Example Usage |
+|-----------|----------|---------------|
+| `ZoteroAnalyzer` | 🔍 Connect and analyze Zotero library | `analyzer = ZoteroAnalyzer()` |
+| `ContentExporter` | 📤 Export and format content | `exporter = ContentExporter("output")` |
+| `FilterCriteria` | 🎯 Define search and filter conditions | `criteria = FilterCriteria(tags=["AI"])` |
+| `LiteratureCategory` | 🏷️ Create literature classification system | `category = LiteratureCategory(...)` |
+
+### ⚡ Common Methods
+
+```python
+# 🔍 Search and fetch
+items = analyzer.search_items("deep learning", limit=50)
+items = analyzer.fetch_items(filter_criteria, limit=100)
+
+# 🏷️ Categorize and organize  
+categorized = analyzer.categorize_items(items, categories)
+collections = analyzer.get_collections()
+
+# 📤 Export and format
+files = exporter.export_items(items, format="markdown")
+context = exporter.export_for_llm_context(categorized, "related_works")
+```
+
+### 🔧 MCP Toolset
+
+| 🛠️ Tool | 📝 Description | 🎯 Use Case |
+|---------|----------------|-------------|
+| `search_literature` | Full-text search of literature library | Quickly find papers on specific topics |
+| `fetch_literature` | Batch retrieval by conditions | Build specific datasets |
+| `categorize_literature` | Smart literature categorization | Automatically organize research materials |
+| `get_collections` | View literature collections | Understand library organization structure |
+| `export_for_llm` | Generate AI-friendly formats | Provide context for LLMs |
+
+## � Community & Support
+
+### 💪 Contributing
+
+We warmly welcome all forms of contributions!
 
 ```bash
-# Test the MCP server directly
-python test_mcp_client.py
+# 🍴 Fork the project
+git clone https://github.com/MasterYip/ZoteroDB-Analyzer.git
 
-# Run the MCP server manually
-python mcp_server_runner.py
+# 🌿 Create a feature branch  
+git checkout -b feature/amazing-feature
+
+# ✨ Commit changes
+git commit -m "Add amazing feature"
+
+# 🚀 Push branch
+git push origin feature/amazing-feature
+
+# 📬 Create Pull Request
 ```
 
-## Environment Variables
+#### 🎯 Contribution Areas
+- � **Bug Fixes**: Report and fix issues
+- ✨ **New Features**: Add useful new functionality
+- 📚 **Documentation Improvements**: Enhance usage instructions and examples
+- � **Test Cases**: Increase test coverage
+- 🌍 **Internationalization**: Support more languages
 
-Set environment variables for easier usage:
+### � Getting Help
 
-```bash
-export ZOTERO_API_KEY="your_api_key"
-export ZOTERO_LIBRARY_ID="your_user_id"
-export ZOTERO_LIBRARY_TYPE="user"  # or "group"
-```
+| 📞 Channel | 🔗 Link | 📝 Description |
+|------------|---------|----------------|
+| 📖 **Full Documentation** | [View Docs](https://github.com/MasterYip/ZoteroDB-Analyzer/wiki) | Detailed usage guides and API documentation |
+| 🐛 **Issue Reports** | [GitHub Issues](https://github.com/MasterYip/ZoteroDB-Analyzer/issues) | Report bugs and request new features |
+| 💬 **Community Discussion** | [GitHub Discussions](https://github.com/MasterYip/ZoteroDB-Analyzer/discussions) | Share experiences and best practices |
+| 📧 **Email Contact** | contact@zoterodb-analyzer.com | Business cooperation and technical consulting |
 
-## Use Cases
+## 📜 License
 
-### 📚 **Academic Literature Reviews**
+This project is licensed under the **MIT License**, allowing free use, modification, and distribution.
 
-- Automatically categorize papers by research themes
-- Generate structured content for Related Works sections
-- Extract key metadata and abstracts for analysis
+See the [LICENSE](LICENSE) file for details.
 
-### 🤖 **Agent-Assisted Research**
+## 📖 Academic Citation
 
-- Provide structured literature context to LLM agents
-- Enable agents to query and analyze your research library
-- Automate literature review generation
-
-### 📊 **Research Analysis**
-
-- Analyze research trends across time periods
-- Identify key authors and publication venues
-- Track citation patterns and relationships
-
-## API Reference
-
-### Core Classes
-
-- **`ZoteroAnalyzer`**: Main class for fetching and analyzing Zotero data
-- **`ContentExporter`**: Handles exporting to various formats
-- **`FilterCriteria`**: Defines filtering parameters for literature search
-- **`LiteratureCategory`**: Represents a category for organizing literature
-- **`ZoteroItem`**: Represents a single literature item with metadata
-
-### Key Methods
-
-- `fetch_items()`: Retrieve items with optional filtering
-- `categorize_items()`: Organize items into predefined categories
-- `search_items()`: Search library using text queries
-- `export_items()`: Export items in JSON/Markdown formats
-- `export_for_llm_context()`: Create LLM-optimized context files
-
-## Contributing
-
-We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests
-5. Submit a pull request
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Citation
-
-If you use ZoteroDB-Analyzer in your research, please cite:
+If ZoteroDB-Analyzer has helped in your research, we welcome citations of our work:
 
 ```bibtex
 @software{zoterodb_analyzer,
   title={ZoteroDB-Analyzer: A Python Package for Literature Review Automation},
   author={Raymon Yip},
   year={2024},
-  url={https://github.com/MasterYip/ZoteroDB-Analyzer}
+  url={https://github.com/MasterYip/ZoteroDB-Analyzer},
+  note={An AI-powered tool for automated Zotero literature analysis and review generation}
 }
 ```
 
-## Support
+## 🚀 Roadmap
 
-- 📖 **Documentation**: [Link to docs]
-- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/MasterYip/ZoteroDB-Analyzer/issues)
-- 💬 **Discussions**: [GitHub Discussions](https://github.com/MasterYip/ZoteroDB-Analyzer/discussions)
-- 📧 **Contact**: <contact@zoterodb-analyzer.com>
+### 🎯 Near-term Goals (v1.0)
+- [x] ✅ Core Zotero API integration
+- [x] ✅ Smart literature categorization functionality  
+- [x] ✅ VS Code Copilot MCP support
+- [ ] � Web visualization interface
+- [ ] 🔄 More export format support
 
-## Roadmap
+### 🌟 Medium-term Vision (v2.0)
+- [ ] 🎯 Multi-platform reference manager support (Mendeley, EndNote)
+- [ ] 🧠 Advanced AI analysis features (paper quality assessment, trend prediction)
+- [ ] 🌐 Cloud services and collaboration features
+- [ ] 📊 Visualization analysis toolset
 
-- [ ] Web interface for non-technical users
-- [ ] Integration with additional reference managers
-- [ ] Advanced citation network analysis
-- [ ] Automated literature trend detection
-- [ ] Support for full-text analysis
+### 🚀 Long-term Outlook (v3.0+)
+- [ ] 🤖 Fully automated literature review generation
+- [ ] 🔍 Deep analysis of full-text content
+- [ ] 📈 Academic impact assessment
+- [ ] 🌍 Multi-language literature processing
+
+---
+
+<div align="center">
+
+### 🌟 If this project helps you, please give us a Star
+
+[![GitHub stars](https://img.shields.io/github/stars/MasterYip/ZoteroDB-Analyzer?style=social)](https://github.com/MasterYip/ZoteroDB-Analyzer/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/MasterYip/ZoteroDB-Analyzer?style=social)](https://github.com/MasterYip/ZoteroDB-Analyzer/network/members)
+
+**Let AI become your powerful assistant in academic research!** 🚀
+
+</div>

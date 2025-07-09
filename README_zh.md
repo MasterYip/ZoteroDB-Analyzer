@@ -3,291 +3,290 @@
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Zotero 数据库分析器，用于快速构建文献综述 - 一个全面的 Python 包，用于分析 Zotero 数据库并为 LLM 代理生成结构化的文献综述。
+> **🌐 Languages**: [English](README.md) | [中文](README_zh.md)
 
-## 功能特性
+**ZoteroDB-Analyzer** 是一个强大的 Python 工具包，专为学术研究者设计，用于自动化分析 Zotero 文献库并生成高质量的文献综述。该工具支持 LLM 代理集成，让 AI 助手能够智能地帮助您管理和分析学术文献。
 
-### 🔍 **全面的 Zotero 集成**
+## 📋 目录
 
-- 从个人或团队 Zotero 库中获取文献项目
-- 通过标签、集合、作者、关键词、日期范围和项目类型进行高级过滤
-- 完整的元数据提取，包括摘要、DOI、BibTeX 引文
-- 在整个文献库中搜索功能
+- [✨ 核心亮点](#-核心亮点)
+- [🎯 功能特性](#-功能特性)
+- [📦 快速安装](#-快速安装)
+- [🚀 5分钟快速上手](#-5分钟快速上手)
+- [💻 使用指南](#-使用指南)
+- [🤖 VS Code Copilot 集成](#-vs-code-copilot-集成)
+- [🎯 应用场景](#-应用场景-1)
+- [📚 API 速查](#-api-速查)
+- [🤝 社区与支持](#-社区与支持)
+- [� 许可证](#-许可证)
+- [�🚀 发展路线图](#-发展路线图)
 
-### 📊 **智能文献分类**
+## ✨ 核心亮点
 
-- 基于用户定义关键词的自动分类
-- 支持多种分类方案
-- 智能内容分析，用于分组相关论文
+- 🚀 **一键配置**：简单的 `.env` 文件配置，无需复杂设置
+- 🤖 **AI 集成**：原生支持 VS Code Copilot、Claude 等 LLM 代理
+- 📊 **智能分析**：自动分类文献，生成结构化综述内容
+- 🔍 **强大搜索**：多维度过滤和搜索您的 Zotero 库
+- 📝 **多格式导出**：支持 JSON、Markdown 等 LLM 友好格式
 
-### 📝 **LLM 优化的导出格式**
+## 🎯 功能特性
 
-- **JSON 格式**，用于结构化数据处理
-- **Markdown 格式**，优化用于 LLM 消费
-- **专用上下文文件**，用于文献综述撰写
-- 支持单个项目和分类集合
+### 🔍 **智能文献管理**
 
-### 🤖 **代理集成**
+- 📚 **全面集成**：无缝连接个人或团队 Zotero 库
+- 🎯 **精准过滤**：支持标签、集合、作者、关键词、时间范围等多维度筛选
+- 📊 **完整元数据**：自动提取摘要、DOI、BibTeX 引文等信息
+- 🔍 **全库搜索**：快速定位目标文献
 
-- **模型上下文协议 (MCP) 接口**，用于无缝代理集成
-- 用于获取、分类和导出文献数据的工具
-- 专为与 Claude、GPT-4 和其他 LLM 代理一起使用而设计
-- 完美适用于自动文献综述生成
+### 🧠 **AI 驱动的分类**
 
-## 安装
+- 🏷️ **自动分类**：基于关键词和内容的智能文献分组
+- 📋 **灵活方案**：支持自定义分类体系和多重标准
+- 🎨 **内容分析**：利用 AI 技术识别相关论文并建立关联
 
-### 从 PyPI 安装（发布后）
+### 📝 **LLM 友好的输出**
+
+- 📄 **JSON 格式**：结构化数据，便于程序处理
+- 📝 **Markdown 格式**：专为 LLM 优化的文本格式
+- 🎯 **专用模板**：针对文献综述的上下文文件生成
+- 🔄 **批量导出**：支持单篇和分类批量处理
+
+### 🤖 **无缝 AI 集成**
+
+- 🔌 **MCP 协议**：标准化的模型上下文协议接口
+- 🛠️ **丰富工具集**：提供获取、分类、导出等完整功能
+- 🎭 **多平台支持**：兼容 Claude、GPT-4、VS Code Copilot 等
+- ⚡ **自动化流程**：一键生成高质量文献综述
+
+## 📦 快速安装
+
+### 方式一：开发版本（推荐）
+
+```bash
+# 克隆仓库
+git clone https://github.com/MasterYip/ZoteroDB-Analyzer.git
+cd ZoteroDB-Analyzer
+
+# 安装依赖
+pip install -e .
+```
+
+### 方式二：PyPI 安装（即将发布）
 
 ```bash
 pip install zoterodb-analyzer
 ```
 
-### 开发版本
+## 🚀 5分钟快速上手
+
+### 步骤 1️⃣：获取 Zotero API 凭据
+
+1. **获取 API Key**：
+   - 访问 [Zotero 设置页面](https://www.zotero.org/settings/keys)
+   - 点击"Create new private key"
+   - 确保选中"Allow library access"权限
+   - 复制生成的 API Key
+
+2. **查找 User ID**：
+   - 访问您的 Zotero 个人主页：`https://www.zotero.org/用户名`
+   - URL 中的数字就是您的 User ID
+
+### 步骤 2️⃣：配置环境变量
 
 ```bash
-git clone https://github.com/MasterYip/ZoteroDB-Analyzer.git
-cd ZoteroDB-Analyzer
-pip install -e .
+# 复制配置模板
+cp .env.example .env
+
+# 编辑 .env 文件，填入您的信息
+ZOTERO_LIBRARY_ID=your_user_id
+ZOTERO_API_KEY=your_api_key
+ZOTERO_LIBRARY_TYPE=user
 ```
 
-### 带 MCP 支持
+<div align="center" style="margin: 20px 0;">
+  <img src="doc/image.png" alt="配置示例" width="600" style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" />
+  <p><em>💡 配置示例：填写您的 Zotero 凭据</em></p>
+</div>
+
+### 步骤 3️⃣：验证安装
 
 ```bash
-pip install zoterodb-analyzer[mcp]
-```
-
-## 快速开始
-
-设置 Zotero 凭据：
-
-```bash
-# Linux Bash
-export ZOTERO_API_KEY="your_api_key"
-export ZOTERO_LIBRARY_ID="your_user_id"
-# Windows Cmd
-set ZOTERO_API_KEY="your_api_key"
-set ZOTERO_LIBRARY_ID="your_user_id"
-# Windows PowerShell
-$env:ZOTERO_LIBRARY_ID='your_user_id'
-$env:ZOTERO_API_KEY='your_api_key'
-```
-
-运行示例：
-
-```bash
-python examples/basic_usage.py
-```
-
-尝试 CLI：
-
-```bash
+# 测试 CLI 工具
 zoterodb-analyzer --help
+
+# 列出您的文献集合
+zoterodb-analyzer collections
+
+# 搜索文献示例
+zoterodb-analyzer search --query "machine learning" --limit 10
 ```
 
-## 使用方法
+## 💻 使用指南
 
-### 1. 设置 Zotero API 访问
+### 🐍 Python API 使用
 
-首先，获取您的 [Zotero API](https://www.zotero.org/support/dev/web_api/v3/start) 凭据：
-
-1. `your_api_key`：前往 [Zotero 设置](https://www.zotero.org/settings/keys) 创建具有库访问权限的新私钥。
-2. `your_user_id`：前往您的用户配置文件，URL 为 `https://www.zotero.org/<your_user_name>/<your_user_id>`。
-
-### 2. 配置环境变量
-
-#### Windows 命令提示符
-
-```cmd
-set ZOTERO_LIBRARY_ID=your_user_id
-set ZOTERO_API_KEY=your_api_key
-```
-
-#### Windows PowerShell
-
-```powershell
-$env:ZOTERO_LIBRARY_ID='your_user_id'
-$env:ZOTERO_API_KEY='your_api_key'
-```
-
-#### Windows 永久环境变量
-
-1. 按 `Win+R`，输入 `sysdm.cpl`，按回车
-2. 进入高级 > 环境变量
-3. 添加 `ZOTERO_LIBRARY_ID` 和 `ZOTERO_API_KEY` 作为新变量
-
-#### Linux/macOS
-
-```bash
-export ZOTERO_LIBRARY_ID='your_user_id'
-export ZOTERO_API_KEY='your_api_key'
-```
-
-要使其永久生效，请添加到 `~/.bashrc` 或 `~/.zshrc`：
-
-```bash
-echo 'export ZOTERO_LIBRARY_ID="your_user_id"' >> ~/.bashrc
-echo 'export ZOTERO_API_KEY="your_api_key"' >> ~/.bashrc
-```
-
-### 3. 基本使用
+#### 基础文献获取和导出
 
 ```python
 from zoterodb_analyzer import ZoteroAnalyzer, ContentExporter, FilterCriteria, LiteratureCategory
 
-# 初始化分析器
-analyzer = ZoteroAnalyzer(
-    library_id="your_user_id",
-    library_type="user",  # 或 "group"
-    api_key="your_api_key"
-)
+# 🔧 初始化分析器（自动读取 .env 配置）
+analyzer = ZoteroAnalyzer()
 
-# 使用过滤器获取项目
+# 🎯 设置过滤条件
 filter_criteria = FilterCriteria(
-    tags=["machine learning", "robotics"],
+    tags=["machine learning", "deep learning"],
     date_range=(2020, 2024),
-    item_types=[ItemType.JOURNAL_ARTICLE]
+    keywords=["neural network", "AI"],
+    item_types=["journalArticle", "conferencePaper"]
 )
 
+# 📚 获取文献
 items = analyzer.fetch_items(filter_criteria, limit=50)
-print(f"找到 {len(items)} 个项目")
+print(f"✅ 找到 {len(items)} 篇相关文献")
 
-# 导出供 LLM 使用
+# 📤 导出为 Markdown 格式
 exporter = ContentExporter("output")
-exported_files = exporter.export_items(items, format=ExportFormat.MARKDOWN)
-print(f"导出到: {exported_files['markdown']}")
+exported_files = exporter.export_items(items, format="markdown")
+print(f"📄 文件已导出至: {exported_files['markdown']}")
 ```
 
-### 4. 高级分类
+#### 智能文献分类
 
 ```python
-# 定义文献类别
+# 🏷️ 定义研究类别
 categories = [
     LiteratureCategory(
         name="扩散模型",
-        description="机器人学中的扩散模型论文",
-        keywords=["diffusion", "denoising", "generative model"]
+        description="扩散模型和生成式 AI 相关研究",
+        keywords=["diffusion", "DDPM", "stable diffusion", "generative model"]
     ),
     LiteratureCategory(
-        name="强化学习",
-        description="机器人控制的强化学习方法",
-        keywords=["reinforcement learning", "policy gradient", "Q-learning"]
+        name="强化学习", 
+        description="强化学习算法和应用",
+        keywords=["reinforcement learning", "Q-learning", "policy gradient", "RL"]
+    ),
+    LiteratureCategory(
+        name="计算机视觉",
+        description="图像处理和计算机视觉技术", 
+        keywords=["computer vision", "image processing", "CNN", "object detection"]
     )
 ]
 
-# 分类项目
+# 🎯 执行智能分类
 categorized_items = analyzer.categorize_items(items, categories)
 
-# 导出分类文献供 LLM 使用
-exported_files = exporter.export_categorized_items(
-    categorized_items, 
-    format=ExportFormat.BOTH
-)
+# 📊 查看分类结果
+for category_name, category_items in categorized_items.items():
+    print(f"📁 {category_name}: {len(category_items)} 篇论文")
 
-# 创建 LLM 优化的上下文文件
+# 📝 生成文献综述上下文
 llm_context = exporter.export_for_llm_context(
     categorized_items, 
     context_type="related_works"
 )
+print(f"📋 文献综述文件: {llm_context}")
 ```
 
-## 命令行界面
+### ⌨️ 命令行工具
 
-该包包含一个功能强大的 CLI，便于自动化：
+#### 常用命令示例
 
 ```bash
-# 获取并导出文献
-zoterodb-analyzer fetch \
-    --library-id YOUR_USER_ID \
-    --api-key YOUR_API_KEY \
-    --tags "machine learning,robotics" \
-    --year-range 2020-2024 \
-    --format both \
-    --categories-file categories.json
-
-# 列出可用集合
-zoterodb-analyzer collections --library-id YOUR_USER_ID --api-key YOUR_API_KEY
-
-# 搜索您的库
+# 🔍 搜索特定主题的文献
 zoterodb-analyzer search \
-    --library-id YOUR_USER_ID \
-    --api-key YOUR_API_KEY \
-    --query "deep learning" \
-    --limit 20
+    --query "扩散模型" \
+    --limit 20 \
+    --export-format markdown
+
+# 📚 按标签和时间范围获取文献
+zoterodb-analyzer fetch \
+    --tags "machine learning,AI" \
+    --year-range 2022-2024 \
+    --limit 100 \
+    --export-format both
+
+# 🗂️ 查看文献库信息
+zoterodb-analyzer collections     # 列出所有集合
+zoterodb-analyzer tags            # 列出所有标签
+
+# 🎯 使用自定义分类配置
+zoterodb-analyzer fetch \
+    --categories-file my_categories.json \
+    --output-dir ./my_research
 ```
 
-### 类别文件格式
+#### 创建分类配置文件
 
-创建一个 `categories.json` 文件来定义您的文献类别：
+创建 `categories.json` 文件来定义您的研究分类：
 
 ```json
 [
   {
-    "name": "扩散模型",
-    "description": "关于扩散模型和生成方法的论文",
-    "keywords": ["diffusion", "denoising", "DDPM", "score-based"]
+    "name": "🤖 扩散模型",
+    "description": "扩散概率模型和相关生成技术",
+    "keywords": [
+      "diffusion", "DDPM", "DDIM", "stable diffusion", 
+      "score-based", "denoising", "generative model"
+    ]
   },
   {
-    "name": "机器人学习",
-    "description": "机器人学习方法",
-    "keywords": ["robot learning", "imitation learning", "demonstration"]
+    "name": "🧠 大语言模型", 
+    "description": "大规模语言模型和Transformer架构",
+    "keywords": [
+      "transformer", "GPT", "BERT", "LLM", 
+      "language model", "attention mechanism"
+    ]
+  },
+  {
+    "name": "🤖 机器人学习",
+    "description": "机器人学习和控制算法",
+    "keywords": [
+      "robot learning", "robotic manipulation", 
+      "imitation learning", "robot control"
+    ]
   }
 ]
 ```
+## 🤖 VS Code Copilot 集成
 
-## LLM 代理的 MCP 集成
+### 🚀 一键配置 AI 助手
 
-该包为 LLM 代理提供了模型上下文协议服务器，实现无缝集成：
+通过 MCP（Model Context Protocol）协议，让您的 AI 助手直接访问和分析您的 Zotero 文献库！
 
-```python
-from zoterodb_analyzer.mcp_server import ZoteroMCPServer
+<div align="center" style="margin: 20px 0;">
+  <img src="doc/mcp_demo.png" alt="MCP 集成演示" width="800" style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" />
+  <p><em>🎯 AI 助手可以直接帮您搜索和分析文献</em></p>
+</div>
 
-# 初始化 MCP 服务器
-mcp_server = ZoteroMCPServer(
-    default_library_id="your_user_id",
-    default_api_key="your_api_key"
-)
+### 📋 配置步骤
 
-# 代理可用的工具：
-# - fetch_literature: 使用过滤器获取文献
-# - categorize_literature: 分类和导出文献
-# - search_literature: 搜索库内容
-# - get_collections: 列出可用集合
-# - get_tags: 获取库标签
-# - export_for_llm: 创建 LLM 优化的导出
-```
-
-### 🔧 **VS Code Copilot MCP 配置**
-
-![MCP 演示](doc/mcp_demo.png)
-
-要将 ZoteroDB Analyzer 与 VS Code Copilot 集成，请按照以下步骤操作：
-
-#### 1. **准备 MCP 服务器**
-
-首先，确保包已安装：
+#### 1️⃣ 验证安装
 
 ```bash
-# 安装包
+# 确保项目已正确安装
 pip install -e .
+
+# 测试 MCP 服务器
+python examples/test_mcp_client.py
 ```
 
-#### 2. **配置 VS Code Github Copilot**
+#### 2️⃣ 配置 VS Code 设置
 
-将以下配置添加到您的 VS Code Copilot 设置中。打开您的 VS Code 设置并添加此 MCP 服务器配置：
+在您的 VS Code `settings.json` 中添加以下配置：
 
 ```json
 {
   "mcp": {
     "servers": {
-      "MCP_ZoteroDB": {
+      "ZoteroDB_Analyzer": {
         "type": "stdio",
-        "command": "python",
+        "command": "/path/to/your/python",
         "args": [
-          "E:\\<path-to-this-pkg>\\mcp_server_runner.py"
+          "/path/to/ZoteroDB-Analyzer/mcp_server_runner.py"
         ],
         "env": {
-          "ZOTERO_LIBRARY_ID": "your_user_id",
-          "ZOTERO_API_KEY": "your_api_key"
+          "PYTHONPATH": "/path/to/ZoteroDB-Analyzer",
         }
       }
     }
@@ -295,33 +294,61 @@ pip install -e .
 }
 ```
 
-**⚠️ 重要提示：**
+> 💡 **提示**：将上述路径替换为您的实际安装路径。如果使用 conda 环境，Python 路径可能类似于：`/home/username/anaconda3/envs/yourenv/bin/python`
 
-- 将 `your_user_id` 和 `your_api_key` 替换为您的实际 Zotero 凭据
-- 在 JSON 配置中，Windows 路径使用双反斜杠 `\\`
-- 保持您的 API 密钥安全，考虑使用环境变量而不是硬编码
+#### 3️⃣ 重启 VS Code 并测试
 
-#### 3. **替代方案：使用环境变量**
+重启 VS Code 后，您就可以在 Copilot 对话中使用以下功能：
 
-为了更好的安全性，您可以配置 MCP 服务器使用系统环境变量：
+### 🛠️ 可用的 AI 工具
 
-```json
-{
-  "mcp": {
-    "servers": {
-      "MCP_ZoteroDB": {
-        "type": "stdio",
-        "command": "python",
-        "args": [
-          "E:\\<path-to-this-pkg>\\mcp_server_runner.py"
-        ]
-      }
-    }
-  }
-}
+| 🔧 工具名称 | 📝 功能描述 | 💬 使用示例 |
+|------------|------------|------------|
+| `search_literature` | 搜索文献库 | "在我的 Zotero 库中搜索关于扩散模型的论文" |
+| `fetch_literature` | 获取和过滤文献 | "获取2023年后关于机器学习的所有论文" |
+| `categorize_literature` | 智能分类文献 | "将我的 AI 论文按不同子领域分类" |
+| `get_collections` | 查看文献集合 | "列出我 Zotero 库中的所有集合" |
+| `get_tags` | 获取标签信息 | "显示我使用过的所有文献标签" |
+| `export_for_llm` | 生成文献综述 | "为我的深度学习综述生成相关工作部分" |
+
+### � 与 AI 助手对话示例
+
+配置完成后，您可以这样与 Copilot 对话：
+
+```
+🙋‍♂️ 用户: "在我的 Zotero 库中搜索关于扩散模型的论文"
+
+🤖 Copilot: 我来帮您搜索扩散模型相关的论文...
+[自动调用 search_literature 工具]
+找到了 15 篇相关论文，包括：
+- "Denoising Diffusion Probabilistic Models" (Ho et al., 2020)
+- "Score-Based Generative Modeling..." (Song et al., 2021)
+...
+
+🙋‍♂️ 用户: "请将这些论文按应用领域分类并生成文献综述"
+
+🤖 Copilot: [自动调用 categorize_literature 工具]
+已将论文分为以下类别：
+📁 图像生成: 8篇
+📁 文本生成: 4篇  
+📁 音频合成: 3篇
+[生成结构化的文献综述文档]
 ```
 
+### 🔒 安全提示
+
+- ✅ 使用 `.env` 文件存储敏感信息，避免在配置中暴露 API 密钥
+- ✅ 定期更新您的 Zotero API 密钥
+- ✅ 检查配置文件权限，确保只有您可以访问
+
+
+
+**注意：**  
+- 确保 `.env` 文件与 `mcp_server_runner.py` 位于同一目录，或已设置好环境变量加载路径。
+- 这样可以避免在 VS Code 配置中暴露您的 API 密钥，提升安全性。
 然后将您的凭据设置为系统环境变量（如上述环境变量部分所述）。
+
+
 
 #### 4. **测试集成**
 
@@ -342,32 +369,18 @@ pip install -e .
 - *"为文献综述分类我最近的机器学习论文"*
 - *"在我的库中查找 [作者姓名] 的论文"*
 - *"以 Markdown 格式导出关于机器人学的论文供我的论文使用"*
+<div align="center" style="width:100%; max-width:480px; margin:auto;">
+  <img src="doc/image2.png" alt="alt text" style="width:100%; height:auto; display:block; border:1px solid #eee; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.05);" />
+  <div style="font-size:0.95em; color:#888; margin-top:8px;">
+    <em>示例：ZoteroDB-Analyzer Copilot with MCP使用效果</em>
+  </div>
+</div>
 
 MCP 服务器将自动处理请求并提供结构化的文献数据，Copilot 可以使用这些数据来帮助您进行研究和写作任务。
 
-### 🧪 **测试 MCP 服务器**
 
-您可以在与 Copilot 集成之前测试 MCP 服务器功能：
 
-```bash
-# 直接测试 MCP 服务器
-python test_mcp_client.py
-
-# 手动运行 MCP 服务器
-python mcp_server_runner.py
-```
-
-## 环境变量
-
-设置环境变量以便于使用：
-
-```bash
-export ZOTERO_API_KEY="your_api_key"
-export ZOTERO_LIBRARY_ID="your_user_id"
-export ZOTERO_LIBRARY_TYPE="user"  # 或 "group"
-```
-
-## 使用场景
+## 🎯 应用场景
 
 ### 📚 **学术文献综述**
 
@@ -387,7 +400,7 @@ export ZOTERO_LIBRARY_TYPE="user"  # 或 "group"
 - 识别关键作者和出版场所
 - 跟踪引用模式和关系
 
-## API 参考
+## 📚 API 速查
 
 ### 核心类
 
@@ -405,44 +418,94 @@ export ZOTERO_LIBRARY_TYPE="user"  # 或 "group"
 - `export_items()`: 以 JSON/Markdown 格式导出项目
 - `export_for_llm_context()`: 创建 LLM 优化的上下文文件
 
-## 贡献
+## 🤝 社区与支持
 
-我们欢迎贡献！请参阅我们的[贡献指南](CONTRIBUTING.md)了解详细信息。
+### 💪 参与贡献
 
-1. Fork 存储库
-2. 创建功能分支
-3. 进行更改
-4. 添加测试
-5. 提交拉取请求
+我们热烈欢迎各种形式的贡献！
 
-## 许可证
+```bash
+# 🍴 Fork 项目
+git clone https://github.com/MasterYip/ZoteroDB-Analyzer.git
 
-本项目根据 MIT 许可证授权 - 有关详细信息，请参阅 [LICENSE](LICENSE) 文件。
+# 🌿 创建特性分支  
+git checkout -b feature/amazing-feature
 
-## 引用
+# ✨ 提交更改
+git commit -m "Add amazing feature"
 
-如果您在研究中使用 ZoteroDB-Analyzer，请引用：
+# 🚀 推送分支
+git push origin feature/amazing-feature
+
+# 📬 创建 Pull Request
+```
+
+#### 🎯 贡献方向
+- 🐛 **Bug 修复**：报告和修复问题
+- ✨ **新功能**：添加实用的新特性
+- 📚 **文档改进**：完善使用说明和示例
+- 🧪 **测试用例**：增加测试覆盖率
+- 🌍 **国际化**：支持更多语言
+
+### 📞 获取帮助
+
+| 📞 渠道 | 🔗 链接 | 📝 说明 |
+|---------|---------|---------|
+| 📖 **完整文档** | [查看文档](https://github.com/MasterYip/ZoteroDB-Analyzer/wiki) | 详细的使用指南和 API 文档 |
+| 🐛 **问题反馈** | [GitHub Issues](https://github.com/MasterYip/ZoteroDB-Analyzer/issues) | 报告 Bug 和请求新功能 |
+| 💬 **社区讨论** | [GitHub Discussions](https://github.com/MasterYip/ZoteroDB-Analyzer/discussions) | 交流使用经验和最佳实践 |
+| 📧 **邮件联系** | contact@zoterodb-analyzer.com | 商业合作和技术咨询 |
+
+## 📜 许可证
+
+本项目采用 **MIT 许可证** 开源，您可以自由使用、修改和分发。
+
+详细信息请参阅 [LICENSE](LICENSE) 文件。
+
+## 📖 学术引用
+
+如果 ZoteroDB-Analyzer 在您的研究中发挥了作用，欢迎引用我们的工作：
 
 ```bibtex
 @software{zoterodb_analyzer,
   title={ZoteroDB-Analyzer: A Python Package for Literature Review Automation},
   author={Raymon Yip},
   year={2024},
-  url={https://github.com/MasterYip/ZoteroDB-Analyzer}
+  url={https://github.com/MasterYip/ZoteroDB-Analyzer},
+  note={An AI-powered tool for automated Zotero literature analysis and review generation}
 }
 ```
 
-## 支持
+## 🚀 发展路线图
 
-- 📖 **文档**: [文档链接]
-- 🐛 **错误报告**: [GitHub Issues](https://github.com/MasterYip/ZoteroDB-Analyzer/issues)
-- 💬 **讨论**: [GitHub Discussions](https://github.com/MasterYip/ZoteroDB-Analyzer/discussions)
-- 📧 **联系**: <contact@zoterodb-analyzer.com>
+### 🎯 近期目标 (v1.0)
+- [x] ✅ 核心 Zotero API 集成
+- [x] ✅ 智能文献分类功能  
+- [x] ✅ VS Code Copilot MCP 支持
+- [ ] 🔄 Web 可视化界面
+- [ ] 🔄 更多导出格式支持
 
-## 路线图
+### 🌟 中期愿景 (v2.0)
+- [ ] 🎯 多平台参考管理器支持 (Mendeley, EndNote)
+- [ ] 🧠 高级 AI 分析功能 (论文质量评估、趋势预测)
+- [ ] 🌐 云端服务和协作功能
+- [ ] 📊 可视化分析工具集
 
-- [ ] 面向非技术用户的 Web 界面
-- [ ] 与其他参考管理器集成
-- [ ] 高级引用网络分析
-- [ ] 自动文献趋势检测
-- [ ] 全文分析支持
+### 🚀 长期展望 (v3.0+)
+- [ ] 🤖 全自动文献综述生成
+- [ ] 🔍 全文内容深度分析
+- [ ] 📈 学术影响力评估
+- [ ] 🌍 多语言文献处理
+
+---
+
+<div align="center">
+
+### 🌟 如果这个项目对您有帮助，请给我们一个 Star
+
+[![GitHub stars](https://img.shields.io/github/stars/MasterYip/ZoteroDB-Analyzer?style=social)](https://github.com/MasterYip/ZoteroDB-Analyzer/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/MasterYip/ZoteroDB-Analyzer?style=social)](https://github.com/MasterYip/ZoteroDB-Analyzer/network/members)
+
+**让 AI 成为您学术研究的得力助手！** 🚀
+
+</div>
