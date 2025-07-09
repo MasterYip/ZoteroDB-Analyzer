@@ -256,6 +256,107 @@ mcp_server = ZoteroMCPServer(
 # - export_for_llm: Create LLM-optimized exports
 ```
 
+### 🔧 **VS Code Copilot MCP Configuration**
+
+![MCP Demo](doc/mcp_demo.png)
+
+To integrate ZoteroDB Analyzer with VS Code Copilot, follow these steps:
+
+#### 1. **Prepare the MCP Server**
+
+First, ensure the package is installed:
+
+```bash
+# Install the package
+pip install -e .
+```
+
+#### 2. **Configure VS Code Github Copilot**
+
+Add the following configuration to your VS Code Copilot settings. Open your VS Code settings and add this MCP server configuration:
+
+```json
+{
+  "mcp": {
+    "servers": {
+      "MCP_ZoteroDB": {
+        "type": "stdio",
+        "command": "python",
+        "args": [
+          "E:\\<path-to-this-pkg>\\mcp_server_runner.py"
+        ],
+        "env": {
+          "ZOTERO_LIBRARY_ID": "your_user_id",
+          "ZOTERO_API_KEY": "your_api_key"
+        }
+      }
+    }
+  }
+}
+```
+
+**⚠️ Important Notes:**
+
+- Replace `your_user_id` and `your_api_key` with your actual Zotero credentials
+- Use double backslashes `\\` for Windows paths in JSON configuration
+- Keep your API key secure and consider using environment variables instead of hardcoding
+
+#### 3. **Alternative: Using Environment Variables**
+
+For better security, you can configure the MCP server to use system environment variables:
+
+```json
+{
+  "mcp": {
+    "servers": {
+      "MCP_ZoteroDB": {
+        "type": "stdio",
+        "command": "python",
+        "args": [
+          "E:\\CodeTestFile\\Github-opensource-repo\\ZoteroDB-Analyzer\\mcp_server_runner.py"
+        ]
+      }
+    }
+  }
+}
+```
+
+Then set your credentials as system environment variables (as described in the Environment Variables section above).
+
+#### 4. **Test the Integration**
+
+Once configured, restart VS Code Copilot. You can then use the following MCP tools in your conversations:
+
+- **`fetch_literature`** - Search and retrieve papers from your Zotero library
+- **`categorize_literature`** - Automatically categorize papers for literature reviews
+- **`search_literature`** - Search your library with text queries
+- **`get_collections`** - List your Zotero collections
+- **`get_tags`** - Get all tags from your library
+- **`export_for_llm`** - Export literature in LLM-optimized formats
+
+#### 5. **Example Usage with Copilot**
+
+After configuration, you can ask Copilot things like:
+
+- *"Search my Zotero library for papers about diffusion models"*
+- *"Categorize my recent machine learning papers for a literature review"*
+- *"Find papers by [author name] in my library"*
+- *"Export papers about robotics in markdown format for my thesis"*
+
+The MCP server will automatically handle the requests and provide structured literature data that Copilot can use to help with your research and writing tasks.
+
+### 🧪 **Testing the MCP Server**
+
+You can test the MCP server functionality before integrating with Copilot:
+
+```bash
+# Test the MCP server directly
+python test_mcp_client.py
+
+# Run the MCP server manually
+python mcp_server_runner.py
+```
+
 ## Environment Variables
 
 Set environment variables for easier usage:
