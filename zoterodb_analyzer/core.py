@@ -91,18 +91,13 @@ class ZoteroAnalyzer:
 
         Args:
             filter_criteria: Criteria for filtering items
-            limit: Maximum number of items to fetch
+            limit: Maximum number of items to fetch (None for all items)
 
         Returns:
             List of ZoteroItem objects
         """
         try:
-            # Start with basic parameters
-            params = {}
-            if limit:
-                params['limit'] = limit
-
-            # Fetch items
+            # Fetch items with pagination
             if filter_criteria and filter_criteria.collections:
                 # If collections are specified, fetch from those collections
                 items = []
@@ -110,11 +105,17 @@ class ZoteroAnalyzer:
                 for collection_name in filter_criteria.collections:
                     collection_key = collections.get(collection_name)
                     if collection_key:
-                        collection_items = self.zot.collection_items_top(collection_key, **params)
+                        collection_items = self._fetch_items_paginated(
+                            fetch_func=lambda **params: self.zot.collection_items_top(collection_key, **params),
+                            limit=limit
+                        )
                         items.extend(collection_items)
             else:
-                # Fetch all items
-                items = self.zot.top(**params)
+                # Fetch all items with pagination
+                items = self._fetch_items_paginated(
+                    fetch_func=lambda **params: self.zot.top(**params),
+                    limit=limit
+                )
 
             # Convert to ZoteroItem objects
             zotero_items = []
@@ -146,6 +147,64 @@ class ZoteroAnalyzer:
         except Exception as e:
             logger.error(f"Error fetching items: {e}")
             raise
+
+    def _fetch_items_paginated(self, fetch_func, limit: Optional[int] = None) -> List[Dict[str, Any]]:
+        """
+        Fetch items with pagination to get more than 100 items.
+
+        Args:
+            fetch_func: Function to call for fetching items (e.g., self.zot.top)
+            limit: Maximum number of items to fetch (None for all items)
+
+        Returns:
+            List of raw item dictionaries from Zotero API
+        """
+        all_items = []
+        start = 0
+        batch_size = 100  # Zotero API limit per request
+
+        logger.info(f"Starting to fetch items with pagination (limit: {limit})")
+
+        while True:
+            # Calculate how many items to fetch in this batch
+            if limit is not None:
+                remaining = limit - len(all_items)
+                if remaining <= 0:
+                    break
+                current_batch_size = min(batch_size, remaining)
+            else:
+                current_batch_size = batch_size
+
+            # Fetch current batch
+            params = {
+                'start': start,
+                'limit': current_batch_size
+            }
+
+            try:
+                batch_items = fetch_func(**params)
+
+                if not batch_items:
+                    # No more items available
+                    logger.info(f"No more items found. Total fetched: {len(all_items)}")
+                    break
+
+                all_items.extend(batch_items)
+                start += len(batch_items)
+
+                logger.info(f"Fetched batch: {len(batch_items)} items (total: {len(all_items)})")
+
+                # If we got fewer items than requested, we've reached the end
+                if len(batch_items) < current_batch_size:
+                    logger.info(f"Reached end of library. Total items fetched: {len(all_items)}")
+                    break
+
+            except Exception as e:
+                logger.error(f"Error fetching batch starting at {start}: {e}")
+                break
+
+        logger.info(f"Pagination complete. Total items fetched: {len(all_items)}")
+        return all_items
 
     def _apply_filters(self, items: List[ZoteroItem], criteria: FilterCriteria) -> List[ZoteroItem]:
         """Apply filtering criteria to items."""
