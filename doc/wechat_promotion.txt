@@ -1,0 +1,8 @@
+🤖 ZoteroDB Analyzer: : 为Copilot注入独属于你的Zotero文库上下文，让你的压榨Agent之旅从文献综述开始
+
+从此告别西西弗式的文献整理，在VS Code里优雅地对话："请基于我的文献库梳理扩散模型的发展脉络"✨
+
+重新定义人机协作的学术美学🎭
+GitHub开源：github.com/MasterYip/ZoteroDB-Analyzer
+
+#计算美学 #知识管理哲学 #AI协作 #开源学术工具
