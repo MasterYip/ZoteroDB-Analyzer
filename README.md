@@ -88,11 +88,10 @@ zoterodb-analyzer --help
 
 ### 1. Set up Zotero API Access
 
-First, get your Zotero API credentials:
+First, get your [Zotero API](https://www.zotero.org/support/dev/web_api/v3/start) credentials:
 
-1. Go to [Zotero Settings](https://www.zotero.org/settings/keys)
-2. Create a new private key with library access
-3. Note your User ID and API Key
+1. `your_api_key`. Go to [Zotero Settings](https://www.zotero.org/settings/keys) to create a new private key with library access.
+2. `your_user_id`. Go to your user profile and the URL is `https://www.zotero.org/<your_user_name>/<your_user_id>`.
 
 ### 2. Configure Environment Variables
 
