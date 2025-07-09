@@ -35,15 +35,15 @@ def load_env_config() -> dict:
 
 class ZoteroConfig:
     """Configuration manager for ZoteroDB Analyzer."""
-    
+
     def __init__(self):
         self.config = load_env_config()
         setup_logging(self.config['log_level'])
-    
+
     def get(self, key: str, default: Optional[str] = None) -> Optional[str]:
         """Get configuration value."""
         return self.config.get(key, default)
-    
+
     def validate_credentials(self) -> bool:
         """Validate that required credentials are available."""
         return bool(self.config['library_id'] and self.config['api_key'])

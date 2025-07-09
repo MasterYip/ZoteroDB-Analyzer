@@ -10,89 +10,89 @@ from .models import ZoteroItem, LiteratureCategory, ExportFormat
 
 class ContentExporter:
     """Handles exporting filtered content to various formats for LLM agents."""
-    
+
     def __init__(self, output_dir: str = "output"):
         """
         Initialize ContentExporter.
-        
+
         Args:
             output_dir: Directory to save exported files
         """
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(exist_ok=True)
-    
-    def export_items(self, 
-                    items: List[ZoteroItem], 
-                    format: ExportFormat = ExportFormat.BOTH,
-                    filename_prefix: str = "literature_review",
-                    include_bibtex: bool = True) -> Dict[str, str]:
+
+    def export_items(self,
+                     items: List[ZoteroItem],
+                     format: ExportFormat = ExportFormat.BOTH,
+                     filename_prefix: str = "literature_review",
+                     include_bibtex: bool = True) -> Dict[str, str]:
         """
         Export items to specified format(s).
-        
+
         Args:
             items: List of ZoteroItem objects to export
             format: Export format (JSON, MARKDOWN, or BOTH)
             filename_prefix: Prefix for output filenames
             include_bibtex: Whether to include BibTeX in exports
-            
+
         Returns:
             Dict mapping format names to file paths
         """
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         exported_files = {}
-        
+
         if format in [ExportFormat.JSON, ExportFormat.BOTH]:
             json_path = self._export_json(items, f"{filename_prefix}_{timestamp}.json", include_bibtex)
             exported_files['json'] = str(json_path)
-        
+
         if format in [ExportFormat.MARKDOWN, ExportFormat.BOTH]:
             md_path = self._export_markdown(items, f"{filename_prefix}_{timestamp}.md", include_bibtex)
             exported_files['markdown'] = str(md_path)
-        
+
         return exported_files
-    
-    def export_categorized_items(self, 
-                                categorized_items: Dict[str, LiteratureCategory],
-                                format: ExportFormat = ExportFormat.BOTH,
-                                filename_prefix: str = "categorized_literature",
-                                include_bibtex: bool = True) -> Dict[str, str]:
+
+    def export_categorized_items(self,
+                                 categorized_items: Dict[str, LiteratureCategory],
+                                 format: ExportFormat = ExportFormat.BOTH,
+                                 filename_prefix: str = "categorized_literature",
+                                 include_bibtex: bool = True) -> Dict[str, str]:
         """
         Export categorized items to specified format(s).
-        
+
         Args:
             categorized_items: Dict mapping category names to LiteratureCategory objects
             format: Export format (JSON, MARKDOWN, or BOTH)
             filename_prefix: Prefix for output filenames
             include_bibtex: Whether to include BibTeX in exports
-            
+
         Returns:
             Dict mapping format names to file paths
         """
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         exported_files = {}
-        
+
         if format in [ExportFormat.JSON, ExportFormat.BOTH]:
             json_path = self._export_categorized_json(
-                categorized_items, 
-                f"{filename_prefix}_{timestamp}.json", 
+                categorized_items,
+                f"{filename_prefix}_{timestamp}.json",
                 include_bibtex
             )
             exported_files['json'] = str(json_path)
-        
+
         if format in [ExportFormat.MARKDOWN, ExportFormat.BOTH]:
             md_path = self._export_categorized_markdown(
-                categorized_items, 
-                f"{filename_prefix}_{timestamp}.md", 
+                categorized_items,
+                f"{filename_prefix}_{timestamp}.md",
                 include_bibtex
             )
             exported_files['markdown'] = str(md_path)
-        
+
         return exported_files
-    
+
     def _export_json(self, items: List[ZoteroItem], filename: str, include_bibtex: bool) -> Path:
         """Export items to JSON format."""
         filepath = self.output_dir / filename
-        
+
         export_data = {
             "metadata": {
                 "export_date": datetime.now().isoformat(),
@@ -102,37 +102,37 @@ class ContentExporter:
             },
             "items": [item.to_dict() for item in items]
         }
-        
+
         with open(filepath, 'w', encoding='utf-8') as f:
             json.dump(export_data, f, indent=2, ensure_ascii=False)
-        
+
         return filepath
-    
+
     def _export_markdown(self, items: List[ZoteroItem], filename: str, include_bibtex: bool) -> Path:
         """Export items to Markdown format optimized for LLM consumption."""
         filepath = self.output_dir / filename
-        
+
         md_content = []
-        
+
         # Header
         md_content.append("# Literature Review Content")
         md_content.append(f"\n**Export Date:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         md_content.append(f"**Total Items:** {len(items)}")
         md_content.append(f"**Generated by:** ZoteroDB Analyzer\n")
-        
+
         # Table of Contents
         md_content.append("## Table of Contents\n")
         for i, item in enumerate(items, 1):
             clean_title = item.title.replace('#', '').replace('[', '').replace(']', '')
             md_content.append(f"{i}. [{clean_title}](#{self._create_anchor(item.title)})")
         md_content.append("\n---\n")
-        
+
         # Items
         md_content.append("## Literature Items\n")
-        
+
         for i, item in enumerate(items, 1):
             md_content.append(f"### {i}. {item.title}\n")
-            
+
             # Basic metadata
             md_content.append("**Metadata:**")
             if item.authors:
@@ -147,32 +147,32 @@ class ContentExporter:
                 md_content.append(f"- **URL:** {item.url}")
             if item.tags:
                 md_content.append(f"- **Tags:** {', '.join(item.tags)}")
-            
+
             # Abstract
             if item.abstract:
                 md_content.append(f"\n**Abstract:**\n{item.abstract}\n")
-            
+
             # Citation
             md_content.append(f"**Citation:** {item.get_citation()}\n")
-            
+
             # BibTeX
             if include_bibtex and item.bibtex:
                 md_content.append(f"**BibTeX:**\n```bibtex\n{item.bibtex}\n```\n")
-            
+
             md_content.append("---\n")
-        
+
         with open(filepath, 'w', encoding='utf-8') as f:
             f.write('\n'.join(md_content))
-        
+
         return filepath
-    
-    def _export_categorized_json(self, 
-                               categorized_items: Dict[str, LiteratureCategory], 
-                               filename: str, 
-                               include_bibtex: bool) -> Path:
+
+    def _export_categorized_json(self,
+                                 categorized_items: Dict[str, LiteratureCategory],
+                                 filename: str,
+                                 include_bibtex: bool) -> Path:
         """Export categorized items to JSON format."""
         filepath = self.output_dir / filename
-        
+
         export_data = {
             "metadata": {
                 "export_date": datetime.now().isoformat(),
@@ -183,21 +183,21 @@ class ContentExporter:
             },
             "categories": {name: cat.to_dict() for name, cat in categorized_items.items()}
         }
-        
+
         with open(filepath, 'w', encoding='utf-8') as f:
             json.dump(export_data, f, indent=2, ensure_ascii=False)
-        
+
         return filepath
-    
-    def _export_categorized_markdown(self, 
-                                   categorized_items: Dict[str, LiteratureCategory], 
-                                   filename: str, 
-                                   include_bibtex: bool) -> Path:
+
+    def _export_categorized_markdown(self,
+                                     categorized_items: Dict[str, LiteratureCategory],
+                                     filename: str,
+                                     include_bibtex: bool) -> Path:
         """Export categorized items to Markdown format optimized for LLM consumption."""
         filepath = self.output_dir / filename
-        
+
         md_content = []
-        
+
         # Header
         md_content.append("# Categorized Literature Review Content")
         md_content.append(f"\n**Export Date:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
@@ -205,7 +205,7 @@ class ContentExporter:
         total_items = sum(len(cat.items) for cat in categorized_items.values())
         md_content.append(f"**Total Items:** {total_items}")
         md_content.append(f"**Generated by:** ZoteroDB Analyzer\n")
-        
+
         # Category overview
         md_content.append("## Category Overview\n")
         for name, category in categorized_items.items():
@@ -215,23 +215,23 @@ class ContentExporter:
             if category.keywords:
                 md_content.append(f"  - Keywords: {', '.join(category.keywords)}")
         md_content.append("\n---\n")
-        
+
         # Categories
         for category_name, category in categorized_items.items():
             if not category.items:  # Skip empty categories
                 continue
-                
+
             md_content.append(f"## {category_name}")
             if category.description:
                 md_content.append(f"\n**Description:** {category.description}")
             if category.keywords:
                 md_content.append(f"**Keywords:** {', '.join(category.keywords)}")
             md_content.append(f"**Item Count:** {len(category.items)}\n")
-            
+
             # Items in this category
             for i, item in enumerate(category.items, 1):
                 md_content.append(f"### {category_name} - Item {i}: {item.title}\n")
-                
+
                 # Basic metadata
                 md_content.append("**Metadata:**")
                 if item.authors:
@@ -244,93 +244,94 @@ class ContentExporter:
                     md_content.append(f"- **DOI:** {item.doi}")
                 if item.tags:
                     md_content.append(f"- **Tags:** {', '.join(item.tags)}")
-                
+
                 # Abstract
                 if item.abstract:
                     md_content.append(f"\n**Abstract:**\n{item.abstract}\n")
-                
+
                 # Citation
                 md_content.append(f"**Citation:** {item.get_citation()}\n")
-                
+
                 # BibTeX
                 if include_bibtex and item.bibtex:
                     md_content.append(f"**BibTeX:**\n```bibtex\n{item.bibtex}\n```\n")
-                
+
                 md_content.append("---\n")
-            
+
             md_content.append("\n")
-        
+
         with open(filepath, 'w', encoding='utf-8') as f:
             f.write('\n'.join(md_content))
-        
+
         return filepath
-    
+
     def _create_anchor(self, text: str) -> str:
         """Create markdown anchor from text."""
         return text.lower().replace(' ', '-').replace('.', '').replace(',', '').replace(':', '')
-    
-    def export_for_llm_context(self, 
-                              categorized_items: Dict[str, LiteratureCategory],
-                              context_type: str = "related_works") -> str:
+
+    def export_for_llm_context(self,
+                               categorized_items: Dict[str, LiteratureCategory],
+                               context_type: str = "related_works") -> str:
         """
         Export in a format specifically optimized for LLM context for literature review writing.
-        
+
         Args:
             categorized_items: Categorized literature items
             context_type: Type of context ("related_works" or "literature_review")
-            
+
         Returns:
             File path of the exported context file
         """
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         filename = f"llm_context_{context_type}_{timestamp}.md"
         filepath = self.output_dir / filename
-        
+
         md_content = []
-        
+
         # Optimized header for LLM consumption
         md_content.append(f"# {context_type.replace('_', ' ').title()} Context")
-        md_content.append(f"\nThis document provides structured literature information for composing {context_type.replace('_', ' ')}.")
+        md_content.append(
+            f"\nThis document provides structured literature information for composing {context_type.replace('_', ' ')}.")
         md_content.append(f"Generated on: {datetime.now().strftime('%Y-%m-%d')}\n")
-        
+
         # Summary statistics
         total_items = sum(len(cat.items) for cat in categorized_items.values())
         md_content.append(f"**Summary:** {len(categorized_items)} categories, {total_items} total papers\n")
-        
+
         # Structured content by category
         for category_name, category in categorized_items.items():
             if not category.items:  # Skip empty categories
                 continue
-                
+
             md_content.append(f"## {category_name}")
             md_content.append(f"*{len(category.items)} papers in this category*\n")
-            
+
             if category.description:
                 md_content.append(f"**Focus Area:** {category.description}\n")
-            
+
             # Concise item summaries
             for item in category.items:
                 authors_str = ", ".join(item.authors[:2])  # Limit to 2 authors
                 if len(item.authors) > 2:
                     authors_str += " et al."
-                
+
                 year_str = f" ({item.year})" if item.year else ""
-                
+
                 md_content.append(f"- **{authors_str}{year_str}**: {item.title}")
-                
+
                 if item.abstract:
                     # Truncate abstract for conciseness
                     abstract_preview = item.abstract[:200] + "..." if len(item.abstract) > 200 else item.abstract
                     md_content.append(f"  - *Summary*: {abstract_preview}")
-                
+
                 if item.journal:
                     md_content.append(f"  - *Published in*: {item.journal}")
-                
+
                 md_content.append("")  # Empty line for readability
-            
+
             md_content.append("---\n")
-        
+
         with open(filepath, 'w', encoding='utf-8') as f:
             f.write('\n'.join(md_content))
-        
+
         return str(filepath)

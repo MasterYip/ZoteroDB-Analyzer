@@ -36,7 +36,7 @@ class FilterCriteria:
     date_range: Optional[tuple] = None  # (start_year, end_year)
     keywords: Optional[List[str]] = None
     title_contains: Optional[str] = None
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for serialization."""
         return {
@@ -71,19 +71,19 @@ class ZoteroItem:
     date_added: Optional[str] = None
     date_modified: Optional[str] = None
     extra: Optional[str] = None
-    
+
     def __post_init__(self):
         """Ensure authors is always a list."""
         if self.authors is None:
             self.authors = []
         if isinstance(self.authors, str):
             self.authors = [self.authors]
-    
+
     @classmethod
     def from_zotero_item(cls, item: Dict[str, Any]) -> 'ZoteroItem':
         """Create ZoteroItem from Zotero API response."""
         data = item.get('data', {})
-        
+
         # Extract authors
         creators = data.get('creators', [])
         authors = []
@@ -97,10 +97,10 @@ class ZoteroItem:
                     full_name = f"{first_name} {last_name}".strip()
                     if full_name:
                         authors.append(full_name)
-        
+
         # Extract tags
         tags = [tag.get('tag', '') for tag in data.get('tags', [])]
-        
+
         # Extract year from date
         date_str = data.get('date', '')
         year = None
@@ -113,7 +113,7 @@ class ZoteroItem:
                     year = int(year_match.group())
             except:
                 pass
-        
+
         return cls(
             key=item.get('key', ''),
             title=data.get('title', ''),
@@ -133,7 +133,7 @@ class ZoteroItem:
             date_modified=data.get('dateModified', ''),
             extra=data.get('extra', ''),
         )
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for serialization."""
         return {
@@ -156,17 +156,17 @@ class ZoteroItem:
             "date_modified": self.date_modified,
             "extra": self.extra,
         }
-    
+
     def to_json(self) -> str:
         """Convert to JSON string."""
         return json.dumps(self.to_dict(), indent=2, ensure_ascii=False)
-    
+
     def get_citation(self) -> str:
         """Generate a basic citation string."""
         authors_str = ", ".join(self.authors[:3])  # Limit to first 3 authors
         if len(self.authors) > 3:
             authors_str += " et al."
-        
+
         citation_parts = []
         if authors_str:
             citation_parts.append(authors_str)
@@ -176,7 +176,7 @@ class ZoteroItem:
             citation_parts.append(f'"{self.title}"')
         if self.journal:
             citation_parts.append(self.journal)
-        
+
         return ". ".join(citation_parts)
 
 
@@ -187,12 +187,12 @@ class LiteratureCategory:
     description: Optional[str] = None
     keywords: List[str] = field(default_factory=list)
     items: List[ZoteroItem] = field(default_factory=list)
-    
+
     def add_item(self, item: ZoteroItem):
         """Add an item to this category."""
         if item not in self.items:
             self.items.append(item)
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for serialization."""
         return {

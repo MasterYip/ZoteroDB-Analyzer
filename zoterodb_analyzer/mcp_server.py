@@ -15,13 +15,13 @@ logger = logging.getLogger(__name__)
 
 class ZoteroMCPServer:
     """MCP server for ZoteroDB Analyzer that provides tools for LLM agents."""
-    
-    def __init__(self, default_library_id: Optional[str] = None, 
+
+    def __init__(self, default_library_id: Optional[str] = None,
                  default_library_type: str = 'user',
                  default_api_key: Optional[str] = None):
         """
         Initialize MCP server.
-        
+
         Args:
             default_library_id: Default Zotero library ID
             default_library_type: Default library type ('user' or 'group')
@@ -32,24 +32,24 @@ class ZoteroMCPServer:
         self.default_api_key = default_api_key
         self.analyzers = {}  # Cache analyzers by library_id
         self.exporter = ContentExporter("mcp_output")
-    
-    def get_analyzer(self, library_id: Optional[str] = None, 
-                    library_type: Optional[str] = None,
-                    api_key: Optional[str] = None) -> ZoteroAnalyzer:
+
+    def get_analyzer(self, library_id: Optional[str] = None,
+                     library_type: Optional[str] = None,
+                     api_key: Optional[str] = None) -> ZoteroAnalyzer:
         """Get or create a ZoteroAnalyzer instance."""
         lib_id = library_id or self.default_library_id
         lib_type = library_type or self.default_library_type
         key = api_key or self.default_api_key
-        
+
         if not lib_id:
             raise ValueError("Library ID must be provided")
-        
+
         cache_key = f"{lib_id}_{lib_type}"
         if cache_key not in self.analyzers:
             self.analyzers[cache_key] = ZoteroAnalyzer(lib_id, lib_type, key)
-        
+
         return self.analyzers[cache_key]
-    
+
     async def list_tools(self) -> List[Dict[str, Any]]:
         """List available MCP tools."""
         return [
@@ -169,7 +169,7 @@ class ZoteroMCPServer:
                 }
             }
         ]
-    
+
     async def call_tool(self, name: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
         """Execute an MCP tool call."""
         try:
@@ -187,11 +187,11 @@ class ZoteroMCPServer:
                 return await self._export_for_llm(arguments)
             else:
                 return {"error": f"Unknown tool: {name}"}
-        
+
         except Exception as e:
             logger.error(f"Error executing tool {name}: {e}")
             return {"error": str(e)}
-    
+
     async def _fetch_literature(self, args: Dict[str, Any]) -> Dict[str, Any]:
         """Fetch literature items."""
         analyzer = self.get_analyzer(
@@ -199,7 +199,7 @@ class ZoteroMCPServer:
             args.get('library_type'),
             args.get('api_key')
         )
-        
+
         # Build filter criteria
         filter_criteria = FilterCriteria()
         if 'tags' in args:
@@ -214,16 +214,16 @@ class ZoteroMCPServer:
             filter_criteria.date_range = tuple(args['year_range'])
         if 'item_type' in args:
             filter_criteria.item_types = [ItemType(args['item_type'])]
-        
+
         items = analyzer.fetch_items(filter_criteria, args.get('limit'))
-        
+
         return {
             "success": True,
             "count": len(items),
             "items": [item.to_dict() for item in items],
             "timestamp": datetime.now().isoformat()
         }
-    
+
     async def _categorize_literature(self, args: Dict[str, Any]) -> Dict[str, Any]:
         """Categorize literature items."""
         analyzer = self.get_analyzer(
@@ -231,7 +231,7 @@ class ZoteroMCPServer:
             args.get('library_type'),
             args.get('api_key')
         )
-        
+
         # Build categories
         categories = []
         for cat_data in args['categories']:
@@ -240,7 +240,7 @@ class ZoteroMCPServer:
                 description=cat_data.get('description'),
                 keywords=cat_data['keywords']
             ))
-        
+
         # Build filter criteria if provided
         filter_criteria = None
         if 'filter_criteria' in args:
@@ -258,23 +258,23 @@ class ZoteroMCPServer:
                 filter_criteria.date_range = tuple(fc_args['year_range'])
             if 'item_type' in fc_args:
                 filter_criteria.item_types = [ItemType(fc_args['item_type'])]
-        
+
         # Fetch and categorize items
         items = analyzer.fetch_items(filter_criteria)
         categorized_items = analyzer.categorize_items(items, categories)
-        
+
         # Export files
         export_format = ExportFormat(args.get('export_format', 'markdown'))
         exported_files = self.exporter.export_categorized_items(
             categorized_items, export_format
         )
-        
+
         # Create LLM context
         context_type = args.get('context_type', 'related_works')
         llm_context_file = self.exporter.export_for_llm_context(
             categorized_items, context_type
         )
-        
+
         return {
             "success": True,
             "categories": {name: cat.to_dict() for name, cat in categorized_items.items()},
@@ -283,7 +283,7 @@ class ZoteroMCPServer:
             "llm_context_file": llm_context_file,
             "timestamp": datetime.now().isoformat()
         }
-    
+
     async def _search_literature(self, args: Dict[str, Any]) -> Dict[str, Any]:
         """Search literature items."""
         analyzer = self.get_analyzer(
@@ -291,9 +291,9 @@ class ZoteroMCPServer:
             args.get('library_type'),
             args.get('api_key')
         )
-        
+
         items = analyzer.search_items(args['query'], args.get('limit', 20))
-        
+
         return {
             "success": True,
             "query": args['query'],
@@ -301,7 +301,7 @@ class ZoteroMCPServer:
             "items": [item.to_dict() for item in items],
             "timestamp": datetime.now().isoformat()
         }
-    
+
     async def _get_collections(self, args: Dict[str, Any]) -> Dict[str, Any]:
         """Get collections from library."""
         analyzer = self.get_analyzer(
@@ -309,16 +309,16 @@ class ZoteroMCPServer:
             args.get('library_type'),
             args.get('api_key')
         )
-        
+
         collections = analyzer.get_collections()
-        
+
         return {
             "success": True,
             "collections": collections,
             "count": len(collections),
             "timestamp": datetime.now().isoformat()
         }
-    
+
     async def _get_tags(self, args: Dict[str, Any]) -> Dict[str, Any]:
         """Get tags from library."""
         analyzer = self.get_analyzer(
@@ -326,10 +326,10 @@ class ZoteroMCPServer:
             args.get('library_type'),
             args.get('api_key')
         )
-        
+
         tags = analyzer.get_tags()
         limit = args.get('limit', 100)
-        
+
         return {
             "success": True,
             "tags": tags[:limit],
@@ -337,13 +337,13 @@ class ZoteroMCPServer:
             "returned_count": min(len(tags), limit),
             "timestamp": datetime.now().isoformat()
         }
-    
+
     async def _export_for_llm(self, args: Dict[str, Any]) -> Dict[str, Any]:
         """Export data for LLM consumption."""
         categorized_data = args['categorized_data']
         context_type = args.get('context_type', 'related_works')
         format_type = args.get('format', 'markdown')
-        
+
         # Reconstruct categorized items from data
         categorized_items = {}
         for name, cat_data in categorized_data.items():
@@ -352,7 +352,7 @@ class ZoteroMCPServer:
                 description=cat_data.get('description'),
                 keywords=cat_data.get('keywords', [])
             )
-            
+
             # Add items to category
             for item_data in cat_data.get('items', []):
                 # Create ZoteroItem from dict
@@ -368,16 +368,16 @@ class ZoteroMCPServer:
                     item_type=item_data.get('item_type')
                 )
                 category.add_item(item)
-            
+
             categorized_items[name] = category
-        
+
         if format_type == 'markdown':
             output_file = self.exporter.export_for_llm_context(categorized_items, context_type)
-            
+
             # Read the content to return
             with open(output_file, 'r', encoding='utf-8') as f:
                 content = f.read()
-            
+
             return {
                 "success": True,
                 "format": "markdown",
@@ -392,7 +392,7 @@ class ZoteroMCPServer:
                 "generated_at": datetime.now().isoformat(),
                 "categories": {name: cat.to_dict() for name, cat in categorized_items.items()}
             }
-            
+
             return {
                 "success": True,
                 "format": "json",

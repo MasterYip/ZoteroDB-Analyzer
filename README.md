@@ -59,6 +59,7 @@ pip install zoterodb-analyzer[mcp]
 ## Quick Start
 
 Set up Zotero credentials:
+
 ```bash
 # Linux Bash
 export ZOTERO_API_KEY="your_api_key"
@@ -88,36 +89,42 @@ zoterodb-analyzer --help
 ### 1. Set up Zotero API Access
 
 First, get your Zotero API credentials:
+
 1. Go to [Zotero Settings](https://www.zotero.org/settings/keys)
 2. Create a new private key with library access
 3. Note your User ID and API Key
 
 ### 2. Configure Environment Variables
 
-#### Windows Command Prompt:
+#### Windows Command Prompt
+
 ```cmd
 set ZOTERO_LIBRARY_ID=your_user_id
 set ZOTERO_API_KEY=your_api_key
 ```
 
-#### Windows PowerShell:
+#### Windows PowerShell
+
 ```powershell
 $env:ZOTERO_LIBRARY_ID='your_user_id'
 $env:ZOTERO_API_KEY='your_api_key'
 ```
 
-#### Windows Permanent Environment Variables:
+#### Windows Permanent Environment Variables
+
 1. Press `Win+R`, type `sysdm.cpl`, press Enter
 2. Go to Advanced > Environment Variables
 3. Add `ZOTERO_LIBRARY_ID` and `ZOTERO_API_KEY` as new variables
 
-#### Linux/macOS:
+#### Linux/macOS
+
 ```bash
 export ZOTERO_LIBRARY_ID='your_user_id'
 export ZOTERO_API_KEY='your_api_key'
 ```
 
 To make it permanent, add to `~/.bashrc` or `~/.zshrc`:
+
 ```bash
 echo 'export ZOTERO_LIBRARY_ID="your_user_id"' >> ~/.bashrc
 echo 'export ZOTERO_API_KEY="your_api_key"' >> ~/.bashrc
@@ -330,7 +337,7 @@ If you use ZoteroDB-Analyzer in your research, please cite:
 - 📖 **Documentation**: [Link to docs]
 - 🐛 **Bug Reports**: [GitHub Issues](https://github.com/yourusername/ZoteroDB-Analyzer/issues)
 - 💬 **Discussions**: [GitHub Discussions](https://github.com/yourusername/ZoteroDB-Analyzer/discussions)
-- 📧 **Contact**: contact@zoterodb-analyzer.com
+- 📧 **Contact**: <contact@zoterodb-analyzer.com>
 
 ## Roadmap
 

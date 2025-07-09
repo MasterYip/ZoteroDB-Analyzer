@@ -11,11 +11,11 @@ logger = logging.getLogger(__name__)
 
 class ZoteroAnalyzer:
     """Main class for analyzing Zotero databases and fetching literature data."""
-    
+
     def __init__(self, library_id: str, library_type: str = 'user', api_key: Optional[str] = None):
         """
         Initialize ZoteroAnalyzer.
-        
+
         Args:
             library_id: Zotero library ID (user ID or group ID)
             library_type: 'user' or 'group'
@@ -23,26 +23,26 @@ class ZoteroAnalyzer:
         """
         self.library_id = library_id
         self.library_type = library_type
-        
+
         if api_key is None:
             api_key = os.getenv('ZOTERO_API_KEY')
             if api_key is None:
                 raise ValueError("API key must be provided or set as ZOTERO_API_KEY environment variable")
-        
+
         self.api_key = api_key
         self.zot = zotero.Zotero(library_id, library_type, api_key)
-        
+
         # Cache for collections and tags
         self._collections_cache = None
         self._tags_cache = None
-    
+
     def get_collections(self, refresh: bool = False) -> Dict[str, str]:
         """
         Get all collections from the library.
-        
+
         Args:
             refresh: Force refresh of cached collections
-            
+
         Returns:
             Dict mapping collection names to collection keys
         """
@@ -50,22 +50,22 @@ class ZoteroAnalyzer:
             try:
                 collections = self.zot.collections()
                 self._collections_cache = {
-                    coll['data']['name']: coll['key'] 
+                    coll['data']['name']: coll['key']
                     for coll in collections
                 }
             except Exception as e:
                 logger.error(f"Error fetching collections: {e}")
                 self._collections_cache = {}
-        
+
         return self._collections_cache
-    
+
     def get_tags(self, refresh: bool = False) -> List[str]:
         """
         Get all tags from the library.
-        
+
         Args:
             refresh: Force refresh of cached tags
-            
+
         Returns:
             List of tag names
         """
@@ -76,19 +76,19 @@ class ZoteroAnalyzer:
             except Exception as e:
                 logger.error(f"Error fetching tags: {e}")
                 self._tags_cache = []
-        
+
         return self._tags_cache
-    
-    def fetch_items(self, 
-                   filter_criteria: Optional[FilterCriteria] = None,
-                   limit: Optional[int] = None) -> List[ZoteroItem]:
+
+    def fetch_items(self,
+                    filter_criteria: Optional[FilterCriteria] = None,
+                    limit: Optional[int] = None) -> List[ZoteroItem]:
         """
         Fetch items from Zotero library with optional filtering.
-        
+
         Args:
             filter_criteria: Criteria for filtering items
             limit: Maximum number of items to fetch
-            
+
         Returns:
             List of ZoteroItem objects
         """
@@ -97,7 +97,7 @@ class ZoteroAnalyzer:
             params = {}
             if limit:
                 params['limit'] = limit
-            
+
             # Fetch items
             if filter_criteria and filter_criteria.collections:
                 # If collections are specified, fetch from those collections
@@ -111,49 +111,49 @@ class ZoteroAnalyzer:
             else:
                 # Fetch all items
                 items = self.zot.items(**params)
-            
+
             # Convert to ZoteroItem objects
             zotero_items = []
             for item in items:
                 try:
                     zotero_item = ZoteroItem.from_zotero_item(item)
-                    
+
                     # Add collection information
                     if 'collections' in item.get('data', {}):
                         collection_keys = item['data']['collections']
                         collections_map = self.get_collections()
                         collection_names = [
-                            name for name, key in collections_map.items() 
+                            name for name, key in collections_map.items()
                             if key in collection_keys
                         ]
                         zotero_item.collections = collection_names
-                    
+
                     zotero_items.append(zotero_item)
                 except Exception as e:
                     logger.warning(f"Error processing item {item.get('key', 'unknown')}: {e}")
                     continue
-            
+
             # Apply additional filtering
             if filter_criteria:
                 zotero_items = self._apply_filters(zotero_items, filter_criteria)
-            
+
             return zotero_items
-            
+
         except Exception as e:
             logger.error(f"Error fetching items: {e}")
             raise
-    
+
     def _apply_filters(self, items: List[ZoteroItem], criteria: FilterCriteria) -> List[ZoteroItem]:
         """Apply filtering criteria to items."""
         filtered_items = items
-        
+
         # Filter by tags
         if criteria.tags:
             filtered_items = [
                 item for item in filtered_items
                 if any(tag in item.tags for tag in criteria.tags)
             ]
-        
+
         # Filter by item types
         if criteria.item_types:
             item_type_values = [t.value for t in criteria.item_types]
@@ -161,18 +161,18 @@ class ZoteroAnalyzer:
                 item for item in filtered_items
                 if item.item_type in item_type_values
             ]
-        
+
         # Filter by authors
         if criteria.authors:
             filtered_items = [
                 item for item in filtered_items
                 if any(
-                    any(author_filter.lower() in author.lower() 
+                    any(author_filter.lower() in author.lower()
                         for author in item.authors)
                     for author_filter in criteria.authors
                 )
             ]
-        
+
         # Filter by date range
         if criteria.date_range:
             start_year, end_year = criteria.date_range
@@ -180,14 +180,14 @@ class ZoteroAnalyzer:
                 item for item in filtered_items
                 if item.year and start_year <= item.year <= end_year
             ]
-        
+
         # Filter by title content
         if criteria.title_contains:
             filtered_items = [
                 item for item in filtered_items
                 if criteria.title_contains.lower() in item.title.lower()
             ]
-        
+
         # Filter by keywords (searches in title and abstract)
         if criteria.keywords:
             filtered_items = [
@@ -197,58 +197,58 @@ class ZoteroAnalyzer:
                     for keyword in criteria.keywords
                 )
             ]
-        
+
         return filtered_items
-    
-    def categorize_items(self, 
-                        items: List[ZoteroItem], 
-                        categories: List[LiteratureCategory]) -> Dict[str, LiteratureCategory]:
+
+    def categorize_items(self,
+                         items: List[ZoteroItem],
+                         categories: List[LiteratureCategory]) -> Dict[str, LiteratureCategory]:
         """
         Categorize items based on predefined categories and their keywords.
-        
+
         Args:
             items: List of ZoteroItem objects to categorize
             categories: List of LiteratureCategory objects with keywords
-            
+
         Returns:
             Dict mapping category names to updated LiteratureCategory objects
         """
         # Initialize categories dict
         categorized = {cat.name: LiteratureCategory(
-            name=cat.name, 
-            description=cat.description, 
+            name=cat.name,
+            description=cat.description,
             keywords=cat.keywords
         ) for cat in categories}
-        
+
         # Add an "Uncategorized" category for items that don't match any category
         categorized["Uncategorized"] = LiteratureCategory(
             name="Uncategorized",
             description="Items that don't match any specified category"
         )
-        
+
         for item in items:
             item_text = (item.title + ' ' + (item.abstract or '') + ' ' + ' '.join(item.tags)).lower()
             categorized_flag = False
-            
+
             for category in categories:
                 # Check if any keywords match
                 if any(keyword.lower() in item_text for keyword in category.keywords):
                     categorized[category.name].add_item(item)
                     categorized_flag = True
                     break  # Item goes to first matching category
-            
+
             if not categorized_flag:
                 categorized["Uncategorized"].add_item(item)
-        
+
         return categorized
-    
+
     def get_bibtex(self, item_keys: List[str]) -> Dict[str, str]:
         """
         Get BibTeX citations for specified items.
-        
+
         Args:
             item_keys: List of Zotero item keys
-            
+
         Returns:
             Dict mapping item keys to BibTeX strings
         """
@@ -261,20 +261,20 @@ class ZoteroAnalyzer:
                 except Exception as e:
                     logger.warning(f"Error fetching BibTeX for item {key}: {e}")
                     bibtex_dict[key] = ""
-            
+
             return bibtex_dict
         except Exception as e:
             logger.error(f"Error fetching BibTeX: {e}")
             return {}
-    
+
     def search_items(self, query: str, limit: Optional[int] = None) -> List[ZoteroItem]:
         """
         Search items using Zotero's search functionality.
-        
+
         Args:
             query: Search query
             limit: Maximum number of results
-            
+
         Returns:
             List of matching ZoteroItem objects
         """
@@ -282,9 +282,9 @@ class ZoteroAnalyzer:
             params = {'q': query}
             if limit:
                 params['limit'] = limit
-            
+
             items = self.zot.items(**params)
-            
+
             zotero_items = []
             for item in items:
                 try:
@@ -293,9 +293,9 @@ class ZoteroAnalyzer:
                 except Exception as e:
                     logger.warning(f"Error processing search result {item.get('key', 'unknown')}: {e}")
                     continue
-            
+
             return zotero_items
-            
+
         except Exception as e:
             logger.error(f"Error searching items: {e}")
             return []

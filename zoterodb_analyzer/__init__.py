@@ -17,7 +17,7 @@ from .models import ZoteroItem, FilterCriteria, ExportFormat, LiteratureCategory
 
 __all__ = [
     "ZoteroAnalyzer",
-    "ContentExporter", 
+    "ContentExporter",
     "ZoteroItem",
     "FilterCriteria",
     "ExportFormat",

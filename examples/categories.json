@@ -2,21 +2,49 @@
   {
     "name": "Diffusion Models",
     "description": "Papers on diffusion models and generative approaches in robotics",
-    "keywords": ["diffusion", "denoising", "DDPM", "score-based", "generative model", "diffusion process"]
+    "keywords": [
+      "diffusion",
+      "denoising",
+      "DDPM",
+      "score-based",
+      "generative model",
+      "diffusion process"
+    ]
   },
   {
     "name": "Reinforcement Learning",
     "description": "Reinforcement learning approaches for robot control and trajectory tracking",
-    "keywords": ["reinforcement learning", "policy gradient", "Q-learning", "actor-critic", "robot control", "trajectory tracking"]
+    "keywords": [
+      "reinforcement learning",
+      "policy gradient",
+      "Q-learning",
+      "actor-critic",
+      "robot control",
+      "trajectory tracking"
+    ]
   },
   {
     "name": "Mathematical Foundations",
     "description": "Mathematical foundations and theoretical aspects",
-    "keywords": ["mathematical foundation", "theory", "optimization", "control theory", "dynamics"]
+    "keywords": [
+      "mathematical foundation",
+      "theory",
+      "optimization",
+      "control theory",
+      "dynamics"
+    ]
   },
   {
     "name": "Legged Robotics",
     "description": "Research on legged robots and locomotion",
-    "keywords": ["legged robot", "quadruped", "biped", "locomotion", "gait", "walking", "running"]
+    "keywords": [
+      "legged robot",
+      "quadruped",
+      "biped",
+      "locomotion",
+      "gait",
+      "walking",
+      "running"
+    ]
   }
 ]
