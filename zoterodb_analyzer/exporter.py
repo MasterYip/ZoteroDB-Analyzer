@@ -320,8 +320,9 @@ class ContentExporter:
                 md_content.append(f"- **{authors_str}{year_str}**: {item.title}")
 
                 if item.abstract:
+                    trun_len = 2000
                     # Truncate abstract for conciseness
-                    abstract_preview = item.abstract[:200] + "..." if len(item.abstract) > 200 else item.abstract
+                    abstract_preview = item.abstract[:trun_len] + "..." if len(item.abstract) > trun_len else item.abstract
                     md_content.append(f"  - *Summary*: {abstract_preview}")
 
                 if item.journal:

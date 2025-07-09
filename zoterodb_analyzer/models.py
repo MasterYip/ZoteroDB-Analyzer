@@ -15,15 +15,77 @@ class ExportFormat(Enum):
 
 class ItemType(Enum):
     """Zotero item types."""
+    # Academic Publications
     JOURNAL_ARTICLE = "journalArticle"
+    CONFERENCE_PAPER = "conferencePaper"
+    PREPRINT = "preprint"
+
+    # Books and Chapters
     BOOK = "book"
     BOOK_SECTION = "bookSection"
-    CONFERENCE_PAPER = "conferencePaper"
+
+    # Academic Works
     THESIS = "thesis"
+    DISSERTATION = "thesis"  # Alias for thesis
+
+    # Reports and Documents
     REPORT = "report"
+    WORKING_PAPER = "report"  # Often categorized as report
+    WHITE_PAPER = "report"   # Often categorized as report
+
+    # Web and Digital
     WEBPAGE = "webpage"
+    BLOG_POST = "blogPost"
+    FORUM_POST = "forumPost"
+
+    # Legal and IP
     PATENT = "patent"
+    CASE = "case"
+    STATUTE = "statute"
+    BILL = "bill"
+
+    # Media and Arts
+    ARTWORK = "artwork"
+    AUDIO_RECORDING = "audioRecording"
+    VIDEO_RECORDING = "videoRecording"
+    FILM = "film"
+    TV_BROADCAST = "tvBroadcast"
+    RADIO_BROADCAST = "radioBroadcast"
+    PODCAST = "podcast"
+
+    # News and Magazines
+    NEWSPAPER_ARTICLE = "newspaperArticle"
+    MAGAZINE_ARTICLE = "magazineArticle"
+
+    # Reference Works
+    ENCYCLOPEDIA_ARTICLE = "encyclopediaArticle"
+    DICTIONARY_ENTRY = "dictionaryEntry"
+
+    # Software and Data
+    COMPUTER_PROGRAM = "computerProgram"
+    SOFTWARE = "computerProgram"  # Alias
+    DATASET = "computerProgram"   # Often categorized as computer program
+
+    # Presentations and Events
+    PRESENTATION = "presentation"
+    CONFERENCE_PRESENTATION = "presentation"  # Alias
+
+    # Correspondence
+    EMAIL = "email"
+    LETTER = "letter"
+    INSTANT_MESSAGE = "instantMessage"
+
+    # Interviews and Personal
+    INTERVIEW = "interview"
+    PERSONAL_COMMUNICATION = "interview"  # Often categorized as interview
+
+    # Documents and Archives
+    DOCUMENT = "document"
     MANUSCRIPT = "manuscript"
+    MAP = "map"
+
+    # Academic Infrastructure
+    HEARING = "hearing"
 
 
 @dataclass

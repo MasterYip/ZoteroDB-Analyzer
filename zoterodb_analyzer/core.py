@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 class ZoteroAnalyzer:
     """Main class for analyzing Zotero databases and fetching literature data."""
 
-    def __init__(self, library_id: str, library_type: str = 'user', api_key: Optional[str] = None):
+    def __init__(self, library_id: str, library_type: str = 'user', api_key: Optional[str] = None, local: bool = False):
         """
         Initialize ZoteroAnalyzer.
 
@@ -30,7 +30,11 @@ class ZoteroAnalyzer:
                 raise ValueError("API key must be provided or set as ZOTERO_API_KEY environment variable")
 
         self.api_key = api_key
-        self.zot = zotero.Zotero(library_id, library_type, api_key)
+        if local:
+            # FIXME: seems not working
+            self.zot = zotero.Zotero(library_id="", library_type="user", api_key="", local=True)
+        else:
+            self.zot = zotero.Zotero(library_id, library_type, api_key)
 
         # Cache for collections and tags
         self._collections_cache = None
@@ -106,11 +110,11 @@ class ZoteroAnalyzer:
                 for collection_name in filter_criteria.collections:
                     collection_key = collections.get(collection_name)
                     if collection_key:
-                        collection_items = self.zot.collection_items(collection_key, **params)
+                        collection_items = self.zot.collection_items_top(collection_key, **params)
                         items.extend(collection_items)
             else:
                 # Fetch all items
-                items = self.zot.items(**params)
+                items = self.zot.top(**params)
 
             # Convert to ZoteroItem objects
             zotero_items = []

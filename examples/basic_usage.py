@@ -87,12 +87,13 @@ def main():
         # Example 1: Basic fetching with filters
         print("\n📚 Example 1: Fetching recent papers...")
         filter_criteria = FilterCriteria(
-            date_range=(2020, 2024),  # Fixed: changed from year_range to date_range
-            item_types=[ItemType.JOURNAL_ARTICLE],
-            keywords=["machine learning", "robotics", "AI"]
+            date_range=(2000, 2024),  # Fixed: changed from year_range to date_range
+            item_types=[ItemType.JOURNAL_ARTICLE, ItemType.CONFERENCE_PAPER,
+                        ItemType.PREPRINT],
+            keywords=[]
         )
 
-        items = analyzer.fetch_items(filter_criteria, limit=20)
+        items = analyzer.fetch_items(filter_criteria, limit=None)
         print(f"Found {len(items)} items matching criteria")
 
         if items:
