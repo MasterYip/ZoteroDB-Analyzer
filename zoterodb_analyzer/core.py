@@ -319,7 +319,7 @@ class ZoteroAnalyzer:
             bibtex_dict = {}
             for key in item_keys:
                 try:
-                    bibtex = self.zot.item(key, format='bibtex')
+                    bibtex = self.zot.top(key, format='bibtex')
                     bibtex_dict[key] = bibtex
                 except Exception as e:
                     logger.warning(f"Error fetching BibTeX for item {key}: {e}")
@@ -346,7 +346,7 @@ class ZoteroAnalyzer:
             if limit:
                 params['limit'] = limit
 
-            items = self.zot.items(**params)
+            items = self.zot.top(**params)
 
             zotero_items = []
             for item in items:
