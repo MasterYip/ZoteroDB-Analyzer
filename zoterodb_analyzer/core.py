@@ -342,7 +342,7 @@ class ZoteroAnalyzer:
             List of matching ZoteroItem objects
         """
         try:
-            params = {'q': query}
+            params = {'q': query, 'qmode': 'everything'}
             if limit:
                 params['limit'] = limit
 
