@@ -20,8 +20,9 @@ from zoterodb_analyzer import (
     FilterCriteria,
     LiteratureCategory,
     ExportFormat,
-    ItemType
+    ItemType,
 )
+from zoterodb_analyzer.config import config
 
 
 def print_credential_instructions():
@@ -54,22 +55,37 @@ def print_credential_instructions():
         print("   export ZOTERO_API_KEY='your_api_key'")
 
         print("\n📋 To make it permanent, add to ~/.bashrc or ~/.zshrc:")
-        print("   echo 'export ZOTERO_LIBRARY_ID=\"your_user_id\"' >> ~/.bashrc")
+        print(
+            "   echo 'export ZOTERO_LIBRARY_ID=\"your_user_id\"' >> ~/.bashrc"
+        )
         print("   echo 'export ZOTERO_API_KEY=\"your_api_key\"' >> ~/.bashrc")
 
     print("\n💡 Alternative: You can also pass credentials directly in code:")
-    print("   analyzer = ZoteroAnalyzer('your_user_id', 'user', 'your_api_key')")
+    print(
+        "   analyzer = ZoteroAnalyzer('your_user_id', 'user', 'your_api_key')"
+    )
 
 
 def main():
     """Main example workflow."""
 
-    # Configuration - replace with your actual credentials
-    LIBRARY_ID = os.getenv('ZOTERO_LIBRARY_ID', 'your_user_id_here')
-    API_KEY = os.getenv('ZOTERO_API_KEY', 'your_api_key_here')
+    # Configuration - try to get from .env file first, then environment variables
+    LIBRARY_ID = config.get("library_id") or os.getenv(
+        "ZOTERO_LIBRARY_ID", "your_user_id_here"
+    )
+    API_KEY = config.get("api_key") or os.getenv(
+        "ZOTERO_API_KEY", "your_api_key_here"
+    )
+    LIBRARY_TYPE = config.get("library_type") or "user"
 
-    if LIBRARY_ID == 'your_user_id_here' or API_KEY == 'your_api_key_here':
-        print_credential_instructions()
+    if (
+        LIBRARY_ID == "your_user_id_here"
+        or API_KEY == "your_api_key_here"
+        or not LIBRARY_ID
+        or not API_KEY
+    ):
+        print("❌ Missing Zotero credentials!")
+        config.print_setup_instructions()
         return
 
     print("🔄 Initializing ZoteroDB Analyzer...")
@@ -77,9 +93,7 @@ def main():
     try:
         # Initialize analyzer
         analyzer = ZoteroAnalyzer(
-            library_id=LIBRARY_ID,
-            library_type='user',
-            api_key=API_KEY
+            library_id=LIBRARY_ID, library_type=LIBRARY_TYPE, api_key=API_KEY
         )
 
         print("✅ Connected to Zotero library")
@@ -87,10 +101,16 @@ def main():
         # Example 1: Basic fetching with filters
         print("\n📚 Example 1: Fetching recent papers...")
         filter_criteria = FilterCriteria(
-            date_range=(2000, 2024),  # Fixed: changed from year_range to date_range
-            item_types=[ItemType.JOURNAL_ARTICLE, ItemType.CONFERENCE_PAPER,
-                        ItemType.PREPRINT],
-            keywords=[]
+            date_range=(
+                2000,
+                2024,
+            ),  # Fixed: changed from year_range to date_range
+            item_types=[
+                ItemType.JOURNAL_ARTICLE,
+                ItemType.CONFERENCE_PAPER,
+                ItemType.PREPRINT,
+            ],
+            keywords=[],
         )
 
         items = analyzer.fetch_items(filter_criteria, limit=None)
@@ -107,14 +127,14 @@ def main():
         # Load categories from JSON file
         categories_file = Path("examples/categories.json")
         if categories_file.exists():
-            with open(categories_file, 'r', encoding='utf-8') as f:
+            with open(categories_file, "r", encoding="utf-8") as f:
                 categories_data = json.load(f)
 
             categories = [
                 LiteratureCategory(
-                    name=cat['name'],
-                    description=cat['description'],
-                    keywords=cat['keywords']
+                    name=cat["name"],
+                    description=cat["description"],
+                    keywords=cat["keywords"],
                 )
                 for cat in categories_data
             ]
@@ -135,7 +155,7 @@ def main():
         exported_files = exporter.export_items(
             items,
             format=ExportFormat.BOTH,
-            filename_prefix="example_literature"
+            filename_prefix="example_literature",
         )
 
         print("Exported files:")
@@ -143,21 +163,22 @@ def main():
             print(f"   {format_name}: {filepath}")
 
         # Export categorized items if we have categories
-        if 'categorized_items' in locals():
-            categorized_files = exporter.export_categorized_items(
+        if "categorized_items" in locals():
+            exporter.export_categorized_items(
                 categorized_items,
                 format=ExportFormat.MARKDOWN,
-                filename_prefix="categorized_example"
+                filename_prefix="categorized_example",
             )
 
             # Create LLM context file
             llm_context = exporter.export_for_llm_context(
-                categorized_items,
-                context_type="related_works"
+                categorized_items, context_type="related_works"
             )
 
             print(f"\nLLM Context file: {llm_context}")
-            print("📋 This file is optimized for LLM agents to compose literature reviews!")
+            print(
+                "📋 This file is optimized for LLM agents to compose literature reviews!"
+            )
 
         # Example 4: Search functionality
         print("\n🔍 Example 4: Searching literature...")
