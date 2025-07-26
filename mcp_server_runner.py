@@ -15,7 +15,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from zoterodb_analyzer.mcp_server import ZoteroMCPServer
-from config import ZOTERO_LIBRARY_ID, ZOTERO_API_KEY
+from zoterodb_analyzer.auth_config import ZOTERO_LIBRARY_ID, ZOTERO_API_KEY
+
 
 class MCPServerRunner:
     """Runs the ZoteroDB Analyzer MCP server with proper MCP protocol."""

@@ -11,6 +11,7 @@ import os
 from pathlib import Path
 import sys
 from zoterodb_analyzer.mcp_server import ZoteroMCPServer
+from zoterodb_analyzer.auth_config import ZOTERO_LIBRARY_ID, ZOTERO_API_KEY
 
 
 async def test_mcp_server():
@@ -20,6 +21,10 @@ async def test_mcp_server():
     # Initialize server with environment variables
     library_id = os.getenv('ZOTERO_LIBRARY_ID')
     api_key = os.getenv('ZOTERO_API_KEY')
+    if ZOTERO_LIBRARY_ID:
+        library_id = ZOTERO_LIBRARY_ID
+    if ZOTERO_API_KEY:
+        api_key = ZOTERO_API_KEY
     
     if not library_id or not api_key:
         print("❌ Please set ZOTERO_LIBRARY_ID and ZOTERO_API_KEY environment variables")
