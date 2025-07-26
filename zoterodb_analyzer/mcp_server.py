@@ -59,9 +59,6 @@ class ZoteroMCPServer:
                 "inputSchema": {
                     "type": "object",
                     "properties": {
-                        "library_id": {"type": "string", "description": "Zotero library ID"},
-                        "library_type": {"type": "string", "enum": ["user", "group"], "default": "user"},
-                        "api_key": {"type": "string", "description": "Zotero API key"},
                         "tags": {"type": "array", "items": {"type": "string"}, "description": "Filter by tags"},
                         "collections": {"type": "array", "items": {"type": "string"}, "description": "Filter by collections"},
                         "authors": {"type": "array", "items": {"type": "string"}, "description": "Filter by authors"},
@@ -78,9 +75,6 @@ class ZoteroMCPServer:
                 "inputSchema": {
                     "type": "object",
                     "properties": {
-                        "library_id": {"type": "string", "description": "Zotero library ID"},
-                        "library_type": {"type": "string", "enum": ["user", "group"], "default": "user"},
-                        "api_key": {"type": "string", "description": "Zotero API key"},
                         "categories": {
                             "type": "array",
                             "items": {
@@ -118,9 +112,6 @@ class ZoteroMCPServer:
                 "inputSchema": {
                     "type": "object",
                     "properties": {
-                        "library_id": {"type": "string", "description": "Zotero library ID"},
-                        "library_type": {"type": "string", "enum": ["user", "group"], "default": "user"},
-                        "api_key": {"type": "string", "description": "Zotero API key"},
                         "query": {"type": "string", "description": "Search query"},
                         "limit": {"type": "integer", "description": "Maximum number of results", "default": 20}
                     },
@@ -132,11 +123,7 @@ class ZoteroMCPServer:
                 "description": "Get all collections from Zotero library",
                 "inputSchema": {
                     "type": "object",
-                    "properties": {
-                        "library_id": {"type": "string", "description": "Zotero library ID"},
-                        "library_type": {"type": "string", "enum": ["user", "group"], "default": "user"},
-                        "api_key": {"type": "string", "description": "Zotero API key"}
-                    }
+                    "properties": {}
                 }
             },
             {
@@ -145,9 +132,6 @@ class ZoteroMCPServer:
                 "inputSchema": {
                     "type": "object",
                     "properties": {
-                        "library_id": {"type": "string", "description": "Zotero library ID"},
-                        "library_type": {"type": "string", "enum": ["user", "group"], "default": "user"},
-                        "api_key": {"type": "string", "description": "Zotero API key"},
                         "limit": {"type": "integer", "description": "Maximum number of tags to return", "default": 100}
                     }
                 }
