@@ -297,6 +297,7 @@ Add the following configuration to your VS Code Copilot settings. Open your VS C
 
 **⚠️ Important Notes:**
 
+- **Proxy may affect data access**, better not use proxy for this MCP server.
 - Replace `your_user_id` and `your_api_key` with your actual Zotero credentials
 - Use double backslashes `\\` for Windows paths in JSON configuration
 - Keep your API key secure and consider using environment variables instead of hardcoding
